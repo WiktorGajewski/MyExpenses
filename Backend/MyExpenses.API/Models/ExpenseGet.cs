@@ -1,6 +1,6 @@
 ﻿namespace MyExpenses.API.Models
 {
-    public class Expense
+    public class ExpenseGet
     {
         public int Id { get; set; }
         public string Name { get; set; }

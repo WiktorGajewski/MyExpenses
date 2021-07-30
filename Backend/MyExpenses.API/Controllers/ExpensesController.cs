@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyExpenses.API.Models;
+using MyExpenses.Data;
 using System.Linq;
 
 namespace MyExpenses.API.Controllers
@@ -9,6 +11,13 @@ namespace MyExpenses.API.Controllers
     [Route("api/expenses")]
     public class ExpensesController : ControllerBase
     {
+        private readonly DbContext dbContext;
+
+        public ExpensesController(MyExpensesDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         [HttpGet]
         public IActionResult GetExpenses()
         {
@@ -33,7 +42,7 @@ namespace MyExpenses.API.Controllers
         {
             var maxId = InMemoryDataStore.Current.Expenses.Max(e => e.Id) + 1;
 
-            var expense = new Expense()
+            var expense = new ExpenseGet()
             {
                 Id = maxId,
                 Name = newExpense.Name,

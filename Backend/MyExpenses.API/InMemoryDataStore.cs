@@ -7,37 +7,37 @@ namespace MyExpenses.API
     {
         public static InMemoryDataStore Current { get; } = new InMemoryDataStore();
 
-        public List<Expense> Expenses { get; set; }
+        public List<ExpenseGet> Expenses { get; set; }
 
         public InMemoryDataStore()
         {
-            Expenses = new List<Expense>()
+            Expenses = new List<ExpenseGet>()
             {
-                new Expense()
+                new ExpenseGet()
                 {
                     Id = 1,
                     Name = "Example 1",
                     Value = 500
                 },
-                new Expense()
+                new ExpenseGet()
                 {
                     Id = 2,
                     Name = "Example 2",
                     Value = 350
                 },
-                new Expense()
+                new ExpenseGet()
                 {
                     Id = 3,
                     Name = "Example 3",
                     Value = 700
                 },
-                new Expense()
+                new ExpenseGet()
                 {
                     Id = 4,
                     Name = "Example 4",
                     Value = 1000
                 },
-                new Expense()
+                new ExpenseGet()
                 {
                     Id = 5,
                     Name = "Example 5",
