@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyExpenses.API.Models
+namespace MyExpenses.API.Resources
 {
-    public class ExpenseUpdate
+    public class ExpenseUpdateDto
     {
         [Required(AllowEmptyStrings = false)]
         [MaxLength(100)]

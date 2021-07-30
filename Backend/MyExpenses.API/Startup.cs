@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using MyExpenses.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MyExpenses.Data.Interfaces;
+using MyExpenses.Data.Services;
+using System;
 
 namespace MyExpenses.API
 {
@@ -17,7 +20,6 @@ namespace MyExpenses.API
         {
             _configuration = configuration;
         }
-
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -32,6 +34,10 @@ namespace MyExpenses.API
             {
                 options.UseSqlServer(_configuration.GetConnectionString("MyExpensesDb"));
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

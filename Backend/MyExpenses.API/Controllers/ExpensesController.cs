@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyExpenses.API.Models;
-using MyExpenses.Data;
-using System.Linq;
+using MyExpenses.API.Resources;
+using MyExpenses.Core.Entities;
+using MyExpenses.Data.Interfaces;
+using System.Collections.Generic;
 
 namespace MyExpenses.API.Controllers
 {
@@ -11,96 +12,95 @@ namespace MyExpenses.API.Controllers
     [Route("api/expenses")]
     public class ExpensesController : ControllerBase
     {
-        private readonly DbContext dbContext;
+        private readonly IExpenseRepository _expenseRepository;
+        private readonly IMapper _mapper;
 
-        public ExpensesController(MyExpensesDbContext dbContext)
+        public ExpensesController(IExpenseRepository expenseRepository, IMapper mapper)
         {
-            this.dbContext = dbContext;
+            _expenseRepository = expenseRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetExpenses()
         {
-            return Ok(InMemoryDataStore.Current.Expenses);
+            var expenses = _expenseRepository.GetExpenses();
+
+            return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
         }
 
         [HttpGet("{id}", Name = "GetExpense")]
         public IActionResult GetExpense(int id)
         {
-            var expense = InMemoryDataStore.Current.Expenses.FirstOrDefault(e => e.Id == id);
-
-            if(expense == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(expense);
-        }
-
-        [HttpPost]
-        public IActionResult CreateExpense([FromBody] ExpenseCreate newExpense)
-        {
-            var maxId = InMemoryDataStore.Current.Expenses.Max(e => e.Id) + 1;
-
-            var expense = new ExpenseGet()
-            {
-                Id = maxId,
-                Name = newExpense.Name,
-                Value = newExpense.Value
-            };
-
-            InMemoryDataStore.Current.Expenses.Add(expense);
-
-            return CreatedAtRoute("GetExpense", new { id = expense.Id }, expense);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult UpdateExpense(int id, [FromBody] ExpenseUpdate updatedExpense)
-        {
-            var expense = InMemoryDataStore.Current.Expenses.FirstOrDefault(e => e.Id == id);
-
-            if(expense == null)
-            {
-                return NotFound();
-            }
-
-            expense.Name = updatedExpense.Name;
-            expense.Value = updatedExpense.Value;
-
-            return NoContent();
-        }
-
-        [HttpPatch("{id}")]
-        public IActionResult PartiallyUpdateExpense(int id, [FromBody] JsonPatchDocument<ExpenseUpdate> patchDocument)
-        {
-            var expense = InMemoryDataStore.Current.Expenses.FirstOrDefault(e => e.Id == id);
+            var expense = _expenseRepository.GetExpense(id);
 
             if (expense == null)
             {
                 return NotFound();
             }
 
-            var expenseToPatch =
-                new ExpenseUpdate()
-                {
-                    Name = expense.Name,
-                    Value = expense.Value
-                };
+            return Ok(_mapper.Map<ExpenseGetDto>(expense));
+        }
+
+        [HttpPost]
+        public IActionResult CreateExpense([FromBody] ExpenseCreateDto newExpense)
+        {
+            var newExpenseEntity = _mapper.Map<Expense>(newExpense);
+
+            _expenseRepository.AddExpense(newExpenseEntity);
+            _expenseRepository.Save();
+            
+            var createdExpense = _mapper.Map<ExpenseGetDto>(newExpenseEntity);
+
+            return CreatedAtRoute("GetExpense", new { id = createdExpense.Id }, createdExpense);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateExpense(int id, [FromBody] ExpenseUpdateDto updatedExpense)
+        {
+            var expense = _expenseRepository.GetExpense(id);
+
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updatedExpense, expense);
+
+            _expenseRepository.UpdateExpense(expense);
+            _expenseRepository.Save();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdateExpense(int id, [FromBody] JsonPatchDocument<ExpenseUpdateDto> patchDocument)
+        {
+            var expense = _expenseRepository.GetExpense(id);
+
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            var expenseToPatch = _mapper.Map<ExpenseUpdateDto>(expense);
 
             patchDocument.ApplyTo(expenseToPatch, ModelState);
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            if(!TryValidateModel(expenseToPatch))
+            if (!TryValidateModel(expenseToPatch))
             {
                 return BadRequest();
             }
 
-            expense.Name = expenseToPatch.Name;
-            expense.Value = expenseToPatch.Value;
+            _mapper.Map(expenseToPatch, expense);
+
+            _expenseRepository.UpdateExpense(expense);
+            _expenseRepository.Save();
 
             return NoContent();
         }
@@ -108,14 +108,15 @@ namespace MyExpenses.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteExpense(int id)
         {
-            var expense = InMemoryDataStore.Current.Expenses.FirstOrDefault(e => e.Id == id);
+            var expense = _expenseRepository.GetExpense(id);
 
             if (expense == null)
             {
                 return NotFound();
             }
 
-            InMemoryDataStore.Current.Expenses.Remove(expense);
+            _expenseRepository.DeleteExpense(expense);
+            _expenseRepository.Save();
 
             return NoContent();
         }
