@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyExpenses.Data;
@@ -23,12 +22,13 @@ namespace MyExpenses.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddMvcOptions(o =>
-                {
-                    o.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-                })
-                .AddNewtonsoftJson();
+            services.AddControllers(o =>
+            {
+                o.ReturnHttpNotAcceptable = true;
+            })
+                .AddNewtonsoftJson()
+                .AddXmlDataContractSerializerFormatters();
+
 
             services.AddDbContextPool<MyExpensesDbContext>(options =>
             {

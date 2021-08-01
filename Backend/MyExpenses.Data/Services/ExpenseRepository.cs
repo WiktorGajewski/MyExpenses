@@ -27,7 +27,10 @@ namespace MyExpenses.Data.Services
 
         public void AddExpense(Expense newExpense)
         {
-            _context.Expenses.Add(newExpense);
+            if(newExpense != null)
+            {
+                _context.Expenses.Add(newExpense);
+            }
         }
 
         public void UpdateExpense(Expense updatedExpense)

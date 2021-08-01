@@ -22,7 +22,8 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetExpenses()
+        [HttpHead]
+        public ActionResult<IEnumerable<ExpenseGetDto>> GetExpenses()
         {
             var expenses = _expenseRepository.GetExpenses();
 
@@ -30,7 +31,7 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpGet("{id}", Name = "GetExpense")]
-        public IActionResult GetExpense(int id)
+        public ActionResult<ExpenseGetDto> GetExpense(int id)
         {
             var expense = _expenseRepository.GetExpense(id);
 
@@ -43,7 +44,7 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateExpense([FromBody] ExpenseCreateDto newExpense)
+        public ActionResult<ExpenseGetDto> CreateExpense([FromBody] ExpenseCreateDto newExpense)
         {
             var newExpenseEntity = _mapper.Map<Expense>(newExpense);
 
@@ -119,6 +120,13 @@ namespace MyExpenses.API.Controllers
             _expenseRepository.Save();
 
             return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetExpensesOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+            return Ok();
         }
     }
 }
