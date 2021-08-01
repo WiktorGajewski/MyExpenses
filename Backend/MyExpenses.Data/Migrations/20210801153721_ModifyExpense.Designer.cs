@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyExpenses.Data;
 
 namespace MyExpenses.Data.Migrations
 {
     [DbContext(typeof(MyExpensesDbContext))]
-    partial class MyExpensesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210801153721_ModifyExpense")]
+    partial class ModifyExpense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

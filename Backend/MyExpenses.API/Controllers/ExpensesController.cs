@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using MyExpenses.API.Extensions;
 using MyExpenses.API.Resources;
 using MyExpenses.Core.Entities;
 using MyExpenses.Data.Interfaces;
@@ -41,6 +42,14 @@ namespace MyExpenses.API.Controllers
             }
 
             return Ok(_mapper.Map<ExpenseGetDto>(expense));
+        }
+
+        [HttpGet("categories")]
+        public IActionResult GetExpenseCategories()
+        {
+            var categories = EnumExtensions.GetValues<ExpenseCategory>();
+
+            return Ok(categories);
         }
 
         [HttpPost]
