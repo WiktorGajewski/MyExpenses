@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
-import { AppComponent } from './app.component';
+import { ExpensesAppComponent } from './expenses-app.component';
 import { ExpenseListComponent } from './expenses/expense-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    ExpensesAppComponent,
     ExpenseListComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot()
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [ExpensesAppComponent]
 })
 export class AppModule { }

@@ -1,15 +1,14 @@
 import { Component } from "@angular/core";
 
 @Component({
-  selector: "myexpenses-root",
+  selector: "expenses-app",
   template: 
   `<div>
     <h1>{{pageTitle}}</h1>
-    <myexpenses-expenses></myexpenses-expenses>
+    <expense-list></expense-list>
   </div>`
-  
 })
 
-export class AppComponent {
+export class ExpensesAppComponent {
   pageTitle: string = "MyExpenses";
 }
