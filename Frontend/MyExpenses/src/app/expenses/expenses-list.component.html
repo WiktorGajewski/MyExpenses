@@ -1,21 +1,10 @@
 <div class="container">
     <h1>{{pageTitle}}</h1>
     <hr />
-    <!-- <div class="row">
-        <div class="col-md-2">
-            Filter by
-        </div>
-        <div class="col-md-4">
-            <input type="text" [(ngModel)]="listFilter" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Filtered by: {{listFilter}}</h4>
-        </div>
-    </div> -->
 
     <div class="row">
-        <expense-card *ngFor="let expense of expenses" [expense]="expense"></expense-card>
+        <div *ngFor="let expense of expenses">
+            <expense-card (click)="handleClick(expense?.Type)" [expense]="expense"></expense-card>
+        </div>
     </div>
 </div>

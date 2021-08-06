@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// import { ModalModule } from 'ngx-bootstrap/modal';
-// import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-// import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { ExpensesAppComponent } from './expenses-app.component';
 import { ExpenseCardComponent } from './expenses/expense-card.component';
 import { ExpensesListComponent } from './expenses/expenses-list.component';
 import { ExpenseService } from './expenses/shared/expense.service';
 import { NavBarComponent } from './nav/navbar.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -21,10 +22,11 @@ import { NavBarComponent } from './nav/navbar.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
-    // ModalModule.forRoot(),
-    // BsDropdownModule.forRoot(),
-    // TooltipModule.forRoot()
+    FormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    CollapseModule.forRoot(),
+    ButtonsModule.forRoot()
   ],
   providers: [ExpenseService],
   bootstrap: [ExpensesAppComponent]

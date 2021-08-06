@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ExpenseService } from "./shared/expense.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: "expenses-list",
@@ -7,14 +8,17 @@ import { ExpenseService } from "./shared/expense.service";
 })
 export class ExpensesListComponent implements OnInit{
     pageTitle: string = "List of Expenses";
-    //listFilter: string = "";
     expenses!:any[]
 
-    constructor(private expenseService: ExpenseService){
+    constructor(private expenseService: ExpenseService, private toastr: ToastrService){
         
     }
 
     ngOnInit(){
         this.expenses = this.expenseService.getExpenses()
+    }
+
+    handleClick(expenseValue: any){
+        this.toastr.info(expenseValue)
     }
 }
