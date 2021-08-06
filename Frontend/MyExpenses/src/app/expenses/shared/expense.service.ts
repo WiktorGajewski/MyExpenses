@@ -1,10 +1,15 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 
 @Injectable()
 export class ExpenseService{
     getExpenses()
     {
-        return EXPENSES
+        let subject = new Subject()
+        setTimeout(() => {subject.next(EXPENSES); subject.complete(); },
+        100)
+
+        return subject
     }
 
     getExpense(id:number)

@@ -9,12 +9,19 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { ExpensesAppComponent } from './expenses-app.component';
-import { ExpenseCardComponent } from './expenses/expense-card.component';
-import { ExpensesListComponent } from './expenses/expenses-list.component';
-import { ExpenseDetailsComponent } from './expenses/expense-details/expense-details.component';
-import { ExpenseService } from './expenses/shared/expense.service';
 import { NavBarComponent } from './nav/navbar.component';
 import { appRoutes } from './routes';
+import { Error404Component } from './errors/404.component';
+
+import {
+  ExpenseCardComponent,
+  ExpensesListComponent,
+  ExpenseDetailsComponent,
+  ExpenseService,
+  CreateExpenseComponent,
+  ExpenseRouteActivator,
+  ExpenseListResolver
+} from './expenses/index'
 
 @NgModule({
   declarations: [
@@ -22,7 +29,9 @@ import { appRoutes } from './routes';
     ExpensesListComponent,
     ExpenseCardComponent,
     ExpenseDetailsComponent,
-    NavBarComponent
+    NavBarComponent,
+    CreateExpenseComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,
@@ -33,7 +42,22 @@ import { appRoutes } from './routes';
     CollapseModule.forRoot(),
     ButtonsModule.forRoot()
   ],
-  providers: [ExpenseService],
+  providers: [
+    ExpenseService,
+    ExpenseRouteActivator,
+    ExpenseListResolver,
+    { 
+      provide: "canDeactivateCreateExpense",
+      useValue: checkDirtyState 
+    }
+  ],
   bootstrap: [ExpensesAppComponent]
 })
 export class AppModule { }
+
+export function checkDirtyState(component:CreateExpenseComponent) {
+  if(component.isDirty){
+    return window.confirm("You have not saved this, do you really want to cancel?")
+  }
+  return true
+}

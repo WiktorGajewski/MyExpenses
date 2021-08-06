@@ -1,10 +1,10 @@
 <div class="container">
-    <h1>{{pageTitle}}</h1>
+    <h1 (click)="handleClick('Hello!')" >{{pageTitle}}</h1>
     <hr />
 
     <div class="row">
         <div *ngFor="let expense of expenses">
-            <expense-card (click)="handleClick(expense?.Type)" [expense]="expense"></expense-card>
+            <expense-card [expense]="expense"></expense-card>
         </div>
     </div>
 </div>
