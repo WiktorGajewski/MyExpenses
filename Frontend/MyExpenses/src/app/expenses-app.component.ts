@@ -5,10 +5,10 @@ import { Component } from "@angular/core";
   template: 
   `
     <nav-bar></nav-bar>
-    <expenses-list></expenses-list>
+    <router-outlet></router-outlet>
   `
 })
 
 export class ExpensesAppComponent {
-  
+
 }

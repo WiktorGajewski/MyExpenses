@@ -3,7 +3,6 @@ import { ExpenseService } from "./shared/expense.service";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
-    selector: "expenses-list",
     templateUrl: "./expenses-list.component.html"
 })
 export class ExpensesListComponent implements OnInit{

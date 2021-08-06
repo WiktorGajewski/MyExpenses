@@ -6,6 +6,11 @@ export class ExpenseService{
     {
         return EXPENSES
     }
+
+    getExpense(id:number)
+    {
+        return EXPENSES.find(e => e.Id === id)
+    }
 }
 
 const EXPENSES = [

@@ -1,4 +1,4 @@
-<div class="card">
+<div [routerLink]="['/expenses', expense?.Id]" class="card">
     <div>Type: {{expense?.Type}}</div>
     <div>Description: {{expense?.Description}}</div>
     <div>Date: {{expense?.Date}}</div>
