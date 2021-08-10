@@ -1,36 +1,37 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
+import { IExpense } from "./expense.model";
 
 @Injectable()
 export class ExpenseService{
-    getExpenses()
+    getExpenses():Observable<IExpense[]>
     {
-        let subject = new Subject()
+        let subject = new Subject<IExpense[]>()
         setTimeout(() => {subject.next(EXPENSES); subject.complete(); },
         100)
 
         return subject
     }
 
-    getExpense(id:number)
+    getExpense(id:number):IExpense|undefined
     {
-        return EXPENSES.find(e => e.Id === id)
+        return EXPENSES.find(e => e.id === id)
     }
 }
 
-const EXPENSES = [
+const EXPENSES:IExpense[] = [
     {
-        "Id": 1,
-        "Type": "Food",
-        "Description": "I was hungry!",
-        "Value": 40.0,
-        "Date": "11/10/2016",
+        id: 1,
+        description: "I was hungry!",
+        value: 40.0,
+        date: new Date("11/10/2016"),
+        category: "Food"
     },
     {
-        "Id": 2,
-        "Type": "Transport",
-        "Description": "I was far from home!",
-        "Value": 10.0,
-        "Date": "11/10/2016"
+        id: 2,
+        description: "I was far from home!",
+        value: 10.0,
+        date: new Date("11/10/2016"),
+        category: "Transport"
     }
 ];
