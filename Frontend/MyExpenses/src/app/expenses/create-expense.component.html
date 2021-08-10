@@ -3,9 +3,38 @@
     <h1>New Expense</h1>
     <hr>
     <div class="col=md=6">
-        <h3>...</h3>
-        <br>
-        <button type="submit" class="btn btn-outline-primary">Save</button>
-        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+        
+        <form [formGroup]="newExpenseForm" (ngSubmit)="saveExpense(newExpenseForm.value)" autocomplete="off">
+            <div class="form-group" [ngClass]="{'error': description.invalid && description.dirty}">
+                <label for="expenseDescription">Descritpion:</label>
+                <em *ngIf="description.invalid && description.dirty && description?.errors?.required" class="text-danger">Required</em>
+                <em *ngIf="description.invalid && description.dirty && description?.errors?.maxlength" class="text-danger">Cannot exceed 100 characters</em>
+                <input formControlName="description" id="expenseDescription" type="text" class="form-control" placeholder="Description..">
+            </div>
+            <div class="form-group" [ngClass]="{'error': date.invalid && date.dirty}">
+                <label for="expenseDate">Date:</label>
+                <em *ngIf="date.invalid && date.dirty" class="text-danger">Required</em>
+                <input formControlName="date" id="expenseDate" type="text" class="form-control" placeholder="format (mm/dd/yyyy)">
+            </div>
+            <div class="form-group" [ngClass]="{'error': value.invalid && value.dirty}">
+                <label for="expenseValue">Value:</label>
+                <em *ngIf="value.invalid && value.dirty" class="text-danger">Required</em>
+                <input formControlName="value" id="expenseValue" type="text" class="form-control" placeholder="Value">
+            </div>
+            <div class="form-group" [ngClass]="{'error': category.invalid && category.dirty}">
+                <label for="expenseCategory">Category:</label>
+                <em *ngIf="category.invalid && category.dirty" class="text-danger">Required</em>
+                <select formControlName="category" class="form-control">
+                    <option value="">select category...</option>
+                    <option value="Food">Food</option>
+                    <option value="Fun">Fun</option>
+                    <option value="Transport">Transport</option>
+                </select>
+            </div>
+
+            <br>
+            <button type="submit" [disabled]="newExpenseForm.invalid" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+        </form>
     </div>
 </div>

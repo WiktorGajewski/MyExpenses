@@ -17,6 +17,12 @@ export class ExpenseService{
     {
         return EXPENSES.find(e => e.id === id)
     }
+
+    saveExpense(expense:IExpense)
+    {
+        expense.id = 999
+        EXPENSES.push(expense)
+    }
 }
 
 const EXPENSES:IExpense[] = [
