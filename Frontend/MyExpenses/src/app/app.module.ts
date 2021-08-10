@@ -22,6 +22,7 @@ import {
   ExpenseRouteActivator,
   ExpenseListResolver
 } from './expenses/index'
+import { AuthService } from './user/auth.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {
     ExpenseService,
     ExpenseRouteActivator,
     ExpenseListResolver,
+    AuthService,
     { 
       provide: "canDeactivateCreateExpense",
       useValue: checkDirtyState 
