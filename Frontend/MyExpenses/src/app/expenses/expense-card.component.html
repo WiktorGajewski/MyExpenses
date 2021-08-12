@@ -1,6 +1,6 @@
 <div [routerLink]="['/expenses', expense?.id]" class="card">
-    <div>Type: {{expense?.category}}</div>
+    <div>Type: {{expense?.category | category}}</div>
     <div>Description: {{expense?.description}}</div>
-    <div>Date: {{expense?.date}}</div>
+    <div>Date: {{expense?.date | date:"d/M/y"}}</div>
     <div>Value: {{expense?.value | currency:"USD":"symbol":"1.2-2"}}</div>
 </div>

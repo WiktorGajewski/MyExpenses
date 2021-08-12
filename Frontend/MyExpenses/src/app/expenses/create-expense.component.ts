@@ -41,12 +41,12 @@ export class CreateExpenseComponent implements OnInit{
         let expense: IExpense = {
             id: 0,
             description: formValues.description,
-            date: formValues.date,
+            date: new Date(formValues.date),
             value: +formValues.value,
-            category: formValues.category
+            category: +formValues.category
         }
 
-        this.expenseService.saveExpense(formValues)
+        this.expenseService.saveExpense(expense)
         this.isDirty = false
         this.router.navigate(["/expenses"])
     }

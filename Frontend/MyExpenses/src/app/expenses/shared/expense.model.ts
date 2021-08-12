@@ -3,5 +3,5 @@ export interface IExpense{
     description: string,
     value: number,
     date: Date,
-    category: string
+    category: number
 }

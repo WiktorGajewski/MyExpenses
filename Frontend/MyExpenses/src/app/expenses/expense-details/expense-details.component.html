@@ -1,14 +1,14 @@
 <div class="container">
     <div class="row">
         <div class="col-md-11">
-            <h2>{{expense?.category}}</h2>
+            <h2>{{expense?.category | category}}</h2>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-11">
-            <div><strong>Date:</strong> {{expense?.date}}</div>
-            <div><strong>Value:</strong> {{expense?.value}}</div>
+            <div><strong>Date:</strong> {{expense?.date | date:"d/M/y"}}</div>
+            <div><strong>Value:</strong> {{expense?.value  | currency:"USD"}}</div>
             <div><strong>Description:</strong> {{expense?.description}}</div>
         </div>
     </div>

@@ -31,13 +31,13 @@ const EXPENSES:IExpense[] = [
         description: "I was hungry!",
         value: 40.0,
         date: new Date("11/10/2016"),
-        category: "Food"
+        category: 1
     },
     {
         id: 2,
         description: "I was far from home!",
         value: 10.0,
         date: new Date("11/10/2016"),
-        category: "Transport"
+        category: 3
     }
 ];

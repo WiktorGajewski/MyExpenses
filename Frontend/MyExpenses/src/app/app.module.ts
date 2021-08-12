@@ -20,7 +20,8 @@ import {
   ExpenseService,
   CreateExpenseComponent,
   ExpenseRouteActivator,
-  ExpenseListResolver
+  ExpenseListResolver,
+  CategoryPipe
 } from './expenses/index'
 import { AuthService } from './user/auth.service';
 
@@ -32,7 +33,8 @@ import { AuthService } from './user/auth.service';
     ExpenseDetailsComponent,
     NavBarComponent,
     CreateExpenseComponent,
-    Error404Component
+    Error404Component,
+    CategoryPipe
   ],
   imports: [
     BrowserModule,
