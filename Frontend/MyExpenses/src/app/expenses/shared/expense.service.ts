@@ -1,27 +1,43 @@
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { Observable, of } from "rxjs";
+import { catchError } from "rxjs/operators";
+import { environment } from "src/environments/environment";
 import { IExpense } from "./expense.model";
 
 @Injectable()
 export class ExpenseService{
-    getExpenses():Observable<IExpense[]>
-    {
-        let subject = new Subject<IExpense[]>()
-        setTimeout(() => {subject.next(EXPENSES); subject.complete(); },
-        100)
+    private readonly apiUrl = environment.apiUrl;
 
-        return subject
+    constructor(private http: HttpClient){
+
     }
 
-    getExpense(id:number):IExpense|undefined
+    getExpenses():Observable<IExpense[]>
     {
-        return EXPENSES.find(e => e.id === id)
+        return this.http.get<IExpense[]>(`${this.apiUrl}expenses`)
+            .pipe(catchError(this.handleError<IExpense[]>("getExpenses", [])))
+    }
+
+    getExpense(id:number):Observable<IExpense>
+    {
+        return this.http.get<IExpense>(`${this.apiUrl}expenses/${id}`)
+            .pipe(catchError(this.handleError<IExpense>("getExpense")))
     }
 
     saveExpense(expense:IExpense)
     {
-        expense.id = 999
-        EXPENSES.push(expense)
+        let options = { headers: new HttpHeaders({'Content-Type':'application/json'})}
+        return this.http.post<IExpense>(`${this.apiUrl}expenses`, expense, options)
+            .pipe(catchError(this.handleError<IExpense>("saveExpense")))
+    }
+
+    private handleError<T> (operation = "operation", result?: T)
+    {
+        return (error: any): Observable<T> => {
+            console.error(error);
+            return of(result as T)
+        }
     }
 }
 

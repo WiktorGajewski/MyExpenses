@@ -46,9 +46,10 @@ export class CreateExpenseComponent implements OnInit{
             category: +formValues.category
         }
 
-        this.expenseService.saveExpense(expense)
-        this.isDirty = false
-        this.router.navigate(["/expenses"])
+        this.expenseService.saveExpense(expense).subscribe(() => {
+            this.isDirty = false
+            this.router.navigate(["/expenses"])
+        });
     }
 
     cancel(){

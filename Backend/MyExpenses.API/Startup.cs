@@ -38,6 +38,16 @@ namespace MyExpenses.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DevelopmentPolicy", builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyOrigin();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,6 +55,7 @@ namespace MyExpenses.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors("DevelopmentPolicy");
             }
             else
             {

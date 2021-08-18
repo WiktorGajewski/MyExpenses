@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ToastrModule } from 'ngx-toastr';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -19,9 +20,9 @@ import {
   ExpenseDetailsComponent,
   ExpenseService,
   CreateExpenseComponent,
-  ExpenseRouteActivator,
   ExpenseListResolver,
-  CategoryPipe
+  CategoryPipe,
+  ExpenseResolver
 } from './expenses/index'
 import { AuthService } from './user/auth.service';
 
@@ -42,14 +43,15 @@ import { AuthService } from './user/auth.service';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     ToastrModule.forRoot(),
     CollapseModule.forRoot(),
     ButtonsModule.forRoot()
   ],
   providers: [
     ExpenseService,
-    ExpenseRouteActivator,
     ExpenseListResolver,
+    ExpenseResolver,
     AuthService,
     { 
       provide: "canDeactivateCreateExpense",

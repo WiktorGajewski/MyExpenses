@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { IExpense } from "../shared";
 import { ExpenseService } from "../shared/expense.service";
 
@@ -15,7 +15,8 @@ export class ExpenseDetailsComponent{
     }
 
     ngOnInit(){
-        this.expense = this.expenseService.getExpense(
-            +this.route.snapshot.params["id"])
+        this.route.data.forEach((data)=> {
+            this.expense = data["expense"]
+        })
     }
 }
