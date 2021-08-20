@@ -27,7 +27,7 @@ export class ExpenseService{
 
     saveExpense(expense:IExpense)
     {
-        let options = { headers: new HttpHeaders({'Content-Type':'application/json'})}
+        let options = { headers: new HttpHeaders({"Content-Type":"application/json"})}
         return this.http.post<IExpense>(`${this.apiUrl}expenses`, expense, options)
             .pipe(catchError(this.handleError<IExpense>("saveExpense")))
     }
@@ -40,20 +40,3 @@ export class ExpenseService{
         }
     }
 }
-
-const EXPENSES:IExpense[] = [
-    {
-        id: 1,
-        description: "I was hungry!",
-        value: 40.0,
-        date: new Date("11/10/2016"),
-        category: 1
-    },
-    {
-        id: 2,
-        description: "I was far from home!",
-        value: 10.0,
-        date: new Date("11/10/2016"),
-        category: 3
-    }
-];
