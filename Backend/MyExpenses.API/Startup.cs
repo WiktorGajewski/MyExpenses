@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using MyExpenses.Data.Interfaces;
 using MyExpenses.Data.Services;
 using System;
+using Microsoft.OpenApi.Models;
 
 namespace MyExpenses.API
 {
@@ -29,6 +30,14 @@ namespace MyExpenses.API
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MyExpenses Api",
+                    Version = "v1",
+                });
+            });
 
             services.AddDbContextPool<MyExpensesDbContext>(options =>
             {
@@ -61,6 +70,14 @@ namespace MyExpenses.API
             {
                 app.UseExceptionHandler();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyExpenses Api V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseStatusCodePages();
 

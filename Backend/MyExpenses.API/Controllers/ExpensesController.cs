@@ -23,7 +23,8 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpGet]
-        [HttpHead]
+        [Produces("application/json","application/xml")]
+        [ProducesResponseType(typeof(IEnumerable<ExpenseGetDto>), 200)]
         public ActionResult<IEnumerable<ExpenseGetDto>> GetExpenses()
         {
             var expenses = _expenseRepository.GetExpenses();
@@ -31,7 +32,20 @@ namespace MyExpenses.API.Controllers
             return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
         }
 
+        [HttpHead]
+        [Produces("application/json", "application/xml")]
+        [ProducesResponseType(typeof(EmptyResult), 200)]
+        public ActionResult<IEnumerable<ExpenseGetDto>> HeadExpenses()
+        {
+            var expenses = _expenseRepository.GetExpenses();
+
+            return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
+        }
+
         [HttpGet("{id}", Name = "GetExpense")]
+        [Produces("application/json", "application/xml")]
+        [ProducesResponseType(typeof(ExpenseGetDto), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         public ActionResult<ExpenseGetDto> GetExpense(int id)
         {
             var expense = _expenseRepository.GetExpense(id);
@@ -45,6 +59,8 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpGet("categories")]
+        [Produces("application/json", "application/xml")]
+        [ProducesResponseType(typeof(List<EnumValue>), 200)]
         public IActionResult GetExpenseCategories()
         {
             var categories = EnumExtensions.GetValues<ExpenseCategory>();
@@ -53,6 +69,9 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpPost]
+        [Consumes("application/json", "application/xml")]
+        [Produces("application/json", "application/xml")]
+        [ProducesResponseType(typeof(ExpenseGetDto), 201)]
         public ActionResult<ExpenseGetDto> CreateExpense([FromBody] ExpenseCreateDto newExpense)
         {
             var newExpenseEntity = _mapper.Map<Expense>(newExpense);
@@ -66,6 +85,9 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Consumes("application/json", "application/xml")]
+        [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult UpdateExpense(int id, [FromBody] ExpenseUpdateDto updatedExpense)
         {
             var expense = _expenseRepository.GetExpense(id);
@@ -84,6 +106,9 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Consumes("application/json", "application/xml")]
+        [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult PartiallyUpdateExpense(int id, [FromBody] JsonPatchDocument<ExpenseUpdateDto> patchDocument)
         {
             var expense = _expenseRepository.GetExpense(id);
@@ -116,6 +141,8 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult DeleteExpense(int id)
         {
             var expense = _expenseRepository.GetExpense(id);
@@ -132,6 +159,7 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpOptions]
+        [ProducesResponseType(200)]
         public IActionResult GetExpensesOptions()
         {
             Response.Headers.Add("Allow", "GET,OPTIONS,POST");
