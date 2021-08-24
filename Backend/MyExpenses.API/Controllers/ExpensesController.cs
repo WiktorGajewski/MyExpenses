@@ -72,6 +72,7 @@ namespace MyExpenses.API.Controllers
         [Consumes("application/json", "application/xml")]
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(ExpenseGetDto), 201)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
         public ActionResult<ExpenseGetDto> CreateExpense([FromBody] ExpenseCreateDto newExpense)
         {
             var newExpenseEntity = _mapper.Map<Expense>(newExpense);
@@ -86,7 +87,9 @@ namespace MyExpenses.API.Controllers
 
         [HttpPut("{id}")]
         [Consumes("application/json", "application/xml")]
+        [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult UpdateExpense(int id, [FromBody] ExpenseUpdateDto updatedExpense)
         {
@@ -107,7 +110,9 @@ namespace MyExpenses.API.Controllers
 
         [HttpPatch("{id}")]
         [Consumes("application/json", "application/xml")]
+        [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult PartiallyUpdateExpense(int id, [FromBody] JsonPatchDocument<ExpenseUpdateDto> patchDocument)
         {
@@ -141,6 +146,7 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult DeleteExpense(int id)
