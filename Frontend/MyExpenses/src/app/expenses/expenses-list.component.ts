@@ -2,13 +2,14 @@ import { Component, OnInit } from "@angular/core";
 import { ExpenseService } from "./shared/expense.service";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute } from "@angular/router";
-import { IExpense } from "./shared";
+import { IExpense, IExpensesPage } from "./shared";
 
 @Component({
     templateUrl: "./expenses-list.component.html"
 })
 export class ExpensesListComponent implements OnInit{
     pageTitle: string = "List of Expenses";
+    expensesPage!:IExpensesPage
     expenses!:IExpense[]
 
     constructor(private expenseService: ExpenseService, private toastr: ToastrService,
@@ -17,7 +18,8 @@ export class ExpensesListComponent implements OnInit{
     }
 
     ngOnInit(){
-        this.expenses = this.route.snapshot.data["expenses"]
+        this.expensesPage = this.route.snapshot.data["expenses"]
+        this.expenses = this.expensesPage.data
     }
 
     handleClick(expenseValue: any){

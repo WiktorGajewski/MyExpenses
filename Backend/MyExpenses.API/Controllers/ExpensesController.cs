@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyExpenses.API.Extensions;
+using MyExpenses.API.Filters;
+using MyExpenses.API.Helpers;
 using MyExpenses.API.Resources;
+using MyExpenses.API.Wrappers;
 using MyExpenses.Core.Entities;
 using MyExpenses.Data.Interfaces;
 using System.Collections.Generic;
@@ -24,12 +27,15 @@ namespace MyExpenses.API.Controllers
 
         [HttpGet]
         [Produces("application/json","application/xml")]
-        [ProducesResponseType(typeof(IEnumerable<ExpenseGetDto>), 200)]
-        public ActionResult<IEnumerable<ExpenseGetDto>> GetExpenses()
+        [ProducesResponseType(typeof(PagedResponse<IEnumerable<ExpenseGetDto>>), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        public ActionResult<PagedResponse<IEnumerable<ExpenseGetDto>>> GetExpenses([FromQuery] PaginationFilter filter)
         {
-            var expenses = _expenseRepository.GetExpenses();
+            var expenses = _expenseRepository.GetExpenses(filter.PageNumber, filter.PageSize);
 
-            return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
+            return Ok(
+                    PaginationHelper.CreatePagedResponse(expenses, filter, _expenseRepository.CountExpenses())
+                );
         }
 
         [HttpHead]
@@ -37,7 +43,7 @@ namespace MyExpenses.API.Controllers
         [ProducesResponseType(typeof(EmptyResult), 200)]
         public ActionResult<IEnumerable<ExpenseGetDto>> HeadExpenses()
         {
-            var expenses = _expenseRepository.GetExpenses();
+            var expenses = _expenseRepository.GetAllExpenses();
 
             return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
         }

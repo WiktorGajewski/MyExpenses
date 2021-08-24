@@ -14,9 +14,23 @@ namespace MyExpenses.Data.Services
             _context = context;
         }
 
-        public IEnumerable<Expense> GetExpenses()
+        public IEnumerable<Expense> GetExpenses(int pageNumber, int pageSize)
+        {
+            return _context.Expenses
+                .OrderByDescending(e => e.Date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+        }
+
+        public IEnumerable<Expense> GetAllExpenses()
         {
             return _context.Expenses.ToList();
+        }
+
+        public int CountExpenses()
+        {
+            return _context.Expenses.Count();
         }
 
         public Expense GetExpense(int id)

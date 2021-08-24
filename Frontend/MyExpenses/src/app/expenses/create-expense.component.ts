@@ -24,7 +24,7 @@ export class CreateExpenseComponent implements OnInit{
     }
 
     ngOnInit(){
-        this.description = new FormControl("", [Validators.required, Validators.maxLength(100)])
+        this.description = new FormControl("", [Validators.required, Validators.maxLength(200)])
         this.date = new FormControl("", Validators.required)
         this.value = new FormControl("", Validators.required)
 

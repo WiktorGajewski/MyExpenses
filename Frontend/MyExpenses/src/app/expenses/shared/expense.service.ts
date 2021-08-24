@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { IExpense } from "./expense.model";
+import { IExpensesPage } from "./expenses-page.model";
 
 @Injectable()
 export class ExpenseService{
@@ -13,10 +14,14 @@ export class ExpenseService{
 
     }
 
-    getExpenses():Observable<IExpense[]>
+    getExpenses():Observable<IExpensesPage>
     {
-        return this.http.get<IExpense[]>(`${this.apiUrl}expenses`)
-            .pipe(catchError(this.handleError<IExpense[]>("getExpenses", [])))
+        let params = new HttpParams()
+            .set("PageNumber", 1)
+            .set("PageSize", 100);
+
+        return this.http.get<IExpensesPage>(`${this.apiUrl}expenses`, {params})
+            .pipe(catchError(this.handleError<IExpensesPage>("getExpenses")))
     }
 
     getExpense(id:number):Observable<IExpense>
