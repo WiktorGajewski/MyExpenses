@@ -27,6 +27,7 @@ export class CreateExpenseComponent implements OnInit{
         this.description = new FormControl("", [Validators.required, Validators.maxLength(200)])
         this.date = new FormControl("", Validators.required)
         this.value = new FormControl("", Validators.required)
+        this.category = new FormControl("", Validators.required)
 
         this.newExpenseForm = new FormGroup({
             description: this.description,
