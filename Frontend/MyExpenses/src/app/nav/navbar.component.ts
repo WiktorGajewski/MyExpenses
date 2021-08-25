@@ -6,7 +6,7 @@ import { AuthService } from "../user/auth.service";
     templateUrl: "./navbar.component.html",
 })
 export class NavBarComponent{
-    isCollapsed: boolean = true;
+    isCollapsed = true;
 
     constructor(public auth:AuthService){
 

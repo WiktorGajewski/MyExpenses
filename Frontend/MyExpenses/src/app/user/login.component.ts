@@ -9,20 +9,20 @@ import { AuthService } from "./auth.service";
     `]
 })
 export class LoginComponent{
-    userName:any
-    password:any
-    mouseoverLogin:boolean = false
+    userName: string | undefined
+    password: string | undefined
+    mouseoverLogin = false
 
     constructor(private authService:AuthService, private router:Router){
 
     }
 
-    login(formValues:any){
+    login(formValues: any): void{
         this.authService.loginUser(formValues.userName, formValues.password)
         this.router.navigate(["expenses"])
     }
 
-    cancel(){
+    cancel(): void{
         this.router.navigate(["expenses"])
     }
 }

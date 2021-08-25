@@ -17,13 +17,13 @@ export class CreateExpenseComponent implements OnInit{
     value!: FormControl
     category!: FormControl
 
-    isDirty:boolean = true
+    isDirty = true
 
     constructor(private router: Router, private expenseService: ExpenseService){
 
     }
 
-    ngOnInit(){
+    ngOnInit(): void{
         this.description = new FormControl("", [Validators.required, Validators.maxLength(200)])
         this.date = new FormControl("", Validators.required)
         this.value = new FormControl("", Validators.required)
@@ -37,8 +37,8 @@ export class CreateExpenseComponent implements OnInit{
         })
     }
 
-    saveExpense(formValues:any){
-        let expense: IExpense = {
+    saveExpense(formValues: any): void{
+        const expense: IExpense = {
             id: 0,
             description: formValues.description,
             date: new Date(formValues.date),
@@ -52,7 +52,7 @@ export class CreateExpenseComponent implements OnInit{
         });
     }
 
-    cancel(){
+    cancel(): void{
         this.router.navigate(["/expenses"])
     }
 }

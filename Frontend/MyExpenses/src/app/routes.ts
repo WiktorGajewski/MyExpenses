@@ -7,7 +7,7 @@ import {
     ExpenseListResolver,
     ExpenseResolver,
     ExpensesListComponent
-} from './expenses/index'
+} from "./expenses/index"
 
 export const appRoutes:Routes = [
     { path: "expenses", component: ExpensesListComponent,

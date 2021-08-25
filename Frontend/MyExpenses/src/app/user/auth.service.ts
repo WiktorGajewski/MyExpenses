@@ -5,7 +5,7 @@ import { IUser } from "./user.model";
 export class AuthService{
     currentUser:IUser|undefined
 
-    loginUser(userName: string, password: string)
+    loginUser(userName: string, password: string): void
     {
         this.currentUser={
             id:1,
@@ -15,7 +15,7 @@ export class AuthService{
         }
     }
 
-    isAuthenticated()
+    isAuthenticated(): boolean
     {
         return !!this.currentUser;
     }
