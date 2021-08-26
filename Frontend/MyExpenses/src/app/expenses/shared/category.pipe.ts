@@ -1,14 +1,19 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { CategoryType } from "./expense.model";
 
 @Pipe({name: "category"})
 export class CategoryPipe implements PipeTransform{
-    transform(value: number|undefined) : string|undefined
+    transform(value: any) : string | undefined
     {
-        switch(value){
-            case 1: return "Food"
-            case 2: return "Fun"
-            case 3: return "Transport"
-            default: return value?.toString();
+        if(!isNaN(Number(value)))
+        {
+            return CategoryType[value].replace("_", " ")
         }
+        else if(value)
+        {
+            return value.replace("_", " ")
+        }
+        
+        return undefined
     }
 }

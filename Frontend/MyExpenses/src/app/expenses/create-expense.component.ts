@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ExpenseService, IExpense } from "./shared";
+import { CategoryType, ExpenseService, IExpense } from "./shared";
 
 @Component({
     templateUrl: "./create-expense.component.html",
@@ -17,17 +17,19 @@ export class CreateExpenseComponent implements OnInit{
     value!: FormControl
     category!: FormControl
 
+    categories!: string[]
+    CategoryEnumType = CategoryType
     isDirty = true
 
     constructor(private router: Router, private expenseService: ExpenseService){
-
+        
     }
 
     ngOnInit(): void{
         this.description = new FormControl("", [Validators.required, Validators.maxLength(200)])
         this.date = new FormControl("", Validators.required)
         this.value = new FormControl("", Validators.required)
-        this.category = new FormControl("", Validators.required)
+        this.category = new FormControl(null, Validators.required)
 
         this.newExpenseForm = new FormGroup({
             description: this.description,
@@ -35,6 +37,8 @@ export class CreateExpenseComponent implements OnInit{
             value: this.value,
             category: this.category
         })
+
+        this.categories= Object.keys(this.CategoryEnumType).filter(f => isNaN(Number(f)))
     }
 
     saveExpense(formValues: any): void{
@@ -43,7 +47,7 @@ export class CreateExpenseComponent implements OnInit{
             description: formValues.description,
             date: new Date(formValues.date),
             value: +formValues.value,
-            category: +formValues.category
+            category: formValues.category
         }
 
         this.expenseService.saveExpense(expense).subscribe(() => {

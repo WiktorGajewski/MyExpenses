@@ -24,11 +24,9 @@
             <div class="form-group" [ngClass]="{'error': category.invalid && category.dirty}">
                 <label for="expenseCategory">Category:</label>
                 <em *ngIf="category.invalid && category.dirty" class="text-danger">Required</em>
-                <select formControlName="category" class="form-control">
-                    <option value="">select category...</option>
-                    <option value="1">Food</option>
-                    <option value="2">Fun</option>
-                    <option value="3">Transport</option>
+                <select formControlName="category"  id="expenseCategory" class="form-control">
+                    <option [ngValue]="null">select category...</option>
+                    <option *ngFor="let category of categories" [ngValue]="category">{{category | category}}</option>
                 </select>
             </div>
 
