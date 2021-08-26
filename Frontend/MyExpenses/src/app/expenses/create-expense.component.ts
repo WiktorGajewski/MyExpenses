@@ -28,7 +28,7 @@ export class CreateExpenseComponent implements OnInit{
     ngOnInit(): void{
         this.description = new FormControl("", [Validators.required, Validators.maxLength(200)])
         this.date = new FormControl("", Validators.required)
-        this.value = new FormControl("", Validators.required)
+        this.value = new FormControl("", [Validators.required, Validators.pattern(/^[+]?([0-9]+(?:[.][0-9]{0,2})?|\.[0-9]{1,2})$/)])
         this.category = new FormControl(null, Validators.required)
 
         this.newExpenseForm = new FormGroup({
