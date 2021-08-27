@@ -5,15 +5,17 @@ import { CategoryType } from "./expense.model";
 export class CategoryPipe implements PipeTransform{
     transform(value: any) : string | undefined
     {
+        if(!value){
+            return undefined
+        }
+
         if(!isNaN(Number(value)))
         {
             return CategoryType[value].replace("_", " ")
         }
-        else if(value)
+        else
         {
             return value.replace("_", " ")
         }
-        
-        return undefined
     }
 }

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { IExpense } from "../shared";
 import { ExpenseService } from "../shared/expense.service";
 
@@ -9,14 +9,17 @@ import { ExpenseService } from "../shared/expense.service";
 export class ExpenseDetailsComponent{
     expense: IExpense|undefined
     
-    constructor(private expenseService: ExpenseService, private route:ActivatedRoute)
-    {
+    constructor(private route:ActivatedRoute, private router: Router){
 
     }
 
     ngOnInit(): void{
         this.route.data.forEach((data)=> {
             this.expense = data["expense"]
+
+            if(!this.expense){
+                this.router.navigate(["/404"])
+            }
         })
     }
 }

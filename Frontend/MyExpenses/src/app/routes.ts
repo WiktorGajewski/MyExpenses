@@ -12,7 +12,7 @@ import {
 export const appRoutes:Routes = [
     { path: "expenses", component: ExpensesListComponent,
         resolve: {expenses: ExpenseListResolver},
-        runGuardsAndResolvers: "paramsOrQueryParamsChange" },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange", },
     { path: "expenses/new", component: CreateExpenseComponent,
         canDeactivate: ["canDeactivateCreateExpense"] },
     { path: "expenses/:id", component: ExpenseDetailsComponent,
@@ -23,5 +23,7 @@ export const appRoutes:Routes = [
         path: "user",
         loadChildren: () => import("./user/user.module")
             .then(m => m.UserModule)
-    }
+    },
+
+    { path: "**", pathMatch: "full", component: Error404Component }
 ]
