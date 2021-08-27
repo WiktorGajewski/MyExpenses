@@ -1,15 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IExpense, IExpensesPage } from "./shared";
+import { IExpense } from "./shared";
 
 @Component({
-    templateUrl: "./expenses-list.component.html"
+    templateUrl: "./expenses-list.component.html",
 })
 export class ExpensesListComponent implements OnInit{
     pageTitle = "List of Expenses";
     expenses!:IExpense[]
-    pageNumber!: number
+    pageNumber = 1;
     totalPages!: number
     totalRecords!: number
 
@@ -33,10 +33,10 @@ export class ExpensesListComponent implements OnInit{
     updatePage(): void{
         this.route.data.subscribe(expenses => {
             const expensesPage = expenses["expenses"]
-            this.expenses = expensesPage.data
-            this.pageNumber = expensesPage.pageNumber
-            this.totalPages = expensesPage.totalPages
-            this.totalRecords = expensesPage.totalRecords
+            this.expenses = expensesPage.data as IExpense[]
+            this.pageNumber = expensesPage.pageNumber as number
+            this.totalPages = expensesPage.totalPages as number
+            this.totalRecords = expensesPage.totalRecords as number
         });
     }
 

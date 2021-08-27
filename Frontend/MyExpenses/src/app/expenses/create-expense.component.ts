@@ -4,11 +4,7 @@ import { Router } from "@angular/router";
 import { CategoryType, ExpenseService, IExpense } from "./shared";
 
 @Component({
-    templateUrl: "./create-expense.component.html",
-    styles: [`
-        em {float:right;}
-        .error input, .error select, .error textarea {background-color:#ffa5a5;}
-    `]
+    templateUrl: "./create-expense.component.html"
 })
 export class CreateExpenseComponent implements OnInit{
     newExpenseForm!: FormGroup
