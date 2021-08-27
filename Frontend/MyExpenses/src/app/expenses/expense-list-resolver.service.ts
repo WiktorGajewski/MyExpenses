@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Resolve } from "@angular/router";
+import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
 import { Observable } from "rxjs";
 import { IExpensesPage } from "./shared";
 import { ExpenseService } from "./shared/expense.service";
@@ -10,7 +10,12 @@ export class ExpenseListResolver implements Resolve<IExpensesPage>{
 
     }
 
-    resolve(): Observable<IExpensesPage> {
-        return this.expenseService.getExpenses()
+    resolve(route: ActivatedRouteSnapshot): Observable<IExpensesPage> {
+        const page = route.queryParamMap.get("page")
+        if(!isNaN(Number(page)) && Number(page) > 0)
+        {
+            return this.expenseService.getExpenses(Number(page))
+        }
+        return this.expenseService.getExpenses(1)
     }
 }

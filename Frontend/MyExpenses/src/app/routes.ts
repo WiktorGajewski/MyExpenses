@@ -11,7 +11,8 @@ import {
 
 export const appRoutes:Routes = [
     { path: "expenses", component: ExpensesListComponent,
-        resolve: {expenses: ExpenseListResolver} },
+        resolve: {expenses: ExpenseListResolver},
+        runGuardsAndResolvers: "paramsOrQueryParamsChange" },
     { path: "expenses/new", component: CreateExpenseComponent,
         canDeactivate: ["canDeactivateCreateExpense"] },
     { path: "expenses/:id", component: ExpenseDetailsComponent,

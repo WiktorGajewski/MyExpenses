@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { IExpense, IExpensesPage } from "./shared";
 
 @Component({
@@ -8,17 +8,36 @@ import { IExpense, IExpensesPage } from "./shared";
 })
 export class ExpensesListComponent implements OnInit{
     pageTitle = "List of Expenses";
-    expensesPage!:IExpensesPage
     expenses!:IExpense[]
+    pageNumber!: number
+    totalPages!: number
+    totalRecords!: number
 
     constructor(private toastr: ToastrService,
-            private route: ActivatedRoute){
-        
+            private route: ActivatedRoute,
+            private router: Router){
+
     }
 
     ngOnInit(): void{
-        this.expensesPage = this.route.snapshot.data["expenses"]
-        this.expenses = this.expensesPage.data
+        this.updatePage()
+    }
+
+    goToPage(newPage: number): void{
+        if(newPage > 0 && newPage <= this.totalPages)
+        {
+            this.router.navigate(["/expenses"], { queryParams: { page: newPage } })
+        }
+    }
+
+    updatePage(): void{
+        this.route.data.subscribe(expenses => {
+            const expensesPage = expenses["expenses"]
+            this.expenses = expensesPage.data
+            this.pageNumber = expensesPage.pageNumber
+            this.totalPages = expensesPage.totalPages
+            this.totalRecords = expensesPage.totalRecords
+        });
     }
 
     handleClick(expenseValue: string): void{

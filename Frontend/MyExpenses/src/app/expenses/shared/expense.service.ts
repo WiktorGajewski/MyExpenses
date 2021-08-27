@@ -13,11 +13,11 @@ export class ExpenseService{
 
     }
 
-    getExpenses():Observable<IExpensesPage>
+    getExpenses(pageNumber = 1, pageSize = 5): Observable<IExpensesPage>
     {
         const params = new HttpParams()
-            .set("PageNumber", 1)
-            .set("PageSize", 100);
+            .set("PageNumber", pageNumber)
+            .set("PageSize", pageSize);
 
         return this.http.get<IExpensesPage>(`${this.apiUrl}expenses`, {params})
     }
