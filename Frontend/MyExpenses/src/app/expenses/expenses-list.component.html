@@ -2,6 +2,13 @@
     <h1 (click)="handleClick('Hello!')" >{{pageTitle}}</h1>
     <hr />
 
+    <div>
+        Page: {{pageNumber}}<br>
+        Total number of pages: {{totalPages}}<br>
+        Total number of records: {{totalRecords}}
+    </div>
+    <hr />
+
     <div class="row">
         <div *ngFor="let expense of expenses">
             <expense-card [expense]="expense"></expense-card>
@@ -14,6 +21,11 @@
             <li class="page-item" [ngClass]="{'disabled': ( pageNumber <= 1 ) }">
                 <a class="page-link" (click)="goToPage(pageNumber-1)" style="cursor:pointer">Previous</a>
             </li>
+
+            <li class="page-item" *ngFor="let link of additionalPageLinks" [ngClass]="{'active': ( link === pageNumber ) }">
+                <a class="page-link" (click)="goToPage(link)" style="cursor:pointer">{{link}}</a>
+            </li>
+
             <li class="page-item" [ngClass]="{'disabled': ( pageNumber >= totalPages ) }">
                 <a class="page-link" (click)="goToPage(pageNumber+1)" style="cursor:pointer">Next</a>
             </li>
