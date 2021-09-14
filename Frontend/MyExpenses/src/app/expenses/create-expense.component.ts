@@ -48,7 +48,7 @@ export class CreateExpenseComponent implements OnInit{
 
         this.expenseService.saveExpense(expense).subscribe(() => {
             this.isDirty = false
-            this.router.navigate(["/expenses"])
+            this.router.navigate(["/expenses"], { queryParams: { message: "Saved" } })
         });
     }
 

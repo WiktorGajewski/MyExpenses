@@ -18,6 +18,7 @@ namespace MyExpenses.Data.Services
         {
             return _context.Expenses
                 .OrderByDescending(e => e.Date)
+                .ThenByDescending(e => e.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

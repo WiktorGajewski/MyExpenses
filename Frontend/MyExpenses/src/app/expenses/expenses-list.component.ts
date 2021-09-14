@@ -23,6 +23,17 @@ export class ExpensesListComponent implements OnInit{
 
     ngOnInit(): void{
         this.updatePage()
+
+        const message = this.route.snapshot.queryParams["message"]
+
+        if(message)
+        {
+            this.handleToastr(message)
+        }
+    }
+
+    handleToastr(message: string|undefined): void{
+        this.toastr.success(message)
     }
 
     goToPage(newPage: number): void{
@@ -81,9 +92,5 @@ export class ExpensesListComponent implements OnInit{
                 this.additionalPageLinks.push(i);
             } 
         }
-    }
-
-    handleClick(expenseValue: string): void{
-        this.toastr.info(expenseValue)
     }
 }
