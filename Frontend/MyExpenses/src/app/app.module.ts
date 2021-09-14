@@ -25,6 +25,7 @@ import {
   ExpenseResolver
 } from "./expenses/index"
 import { AuthService } from "./user/auth.service";
+import { FooterComponent } from "./nav/footer.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AuthService } from "./user/auth.service";
     ExpenseCardComponent,
     ExpenseDetailsComponent,
     NavBarComponent,
+    FooterComponent,
     CreateExpenseComponent,
     Error404Component,
     CategoryPipe

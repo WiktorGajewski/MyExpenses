@@ -1,6 +1,16 @@
-<div [routerLink]="['/expenses', expense?.id]" class="card">
-    <div>Type: {{expense?.category | category}}</div>
-    <div>Description: {{expense?.description}}</div>
-    <div>Date: {{expense?.date | date:"d/M/y"}}</div>
-    <div>Value: {{expense?.value | currency:"USD":"symbol":"1.2-2"}}</div>
+<div [routerLink]="['/expenses', expense?.id]" class="card m-2 border border-dark">
+    
+        <div class="card-header text-white bg-dark">
+            <span style="float: left;">{{expense?.category | category}}</span>
+            <span style="float: right;">{{expense?.value | currency:"USD":"symbol":"1.2-2"}}</span>
+        </div>
+
+        <div class="card-body bg-white">
+            <div>{{expense?.description}}</div>
+        </div>
+
+        <div class="card-footer">
+            <div>Date: {{expense?.date | date:"d/M/y"}}</div>
+        </div>
+    
 </div>

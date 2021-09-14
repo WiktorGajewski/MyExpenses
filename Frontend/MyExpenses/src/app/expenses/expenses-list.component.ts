@@ -5,9 +5,27 @@ import { IExpense } from "./shared";
 
 @Component({
     templateUrl: "./expenses-list.component.html",
+    styles:[`
+        .pagination > li > a { 
+            background-color: black;
+            border-color: black
+        }
+
+        .pagination > .disabled > a { 
+            background-color: #C0C0C0;
+        }
+
+        .pagination > li > a:hover { 
+            background-color: #800000;
+            color: white;
+        }
+        .pagination > .active > a { 
+            background-color: #006400;
+        }
+    `]
 })
 export class ExpensesListComponent implements OnInit{
-    pageTitle = "List of Expenses";
+    pageTitle = "Expenses";
     expenses!:IExpense[]
     pageNumber = 1;
     totalPages!: number

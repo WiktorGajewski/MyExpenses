@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mb-5">
     <h1>{{pageTitle}}</h1>
     <hr />
 
@@ -16,9 +16,9 @@
     </div>
 
     <br>
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" class="mb-5">
         <ul class="pagination justify-content-center pagination-lg">
-            <li class="page-item" [ngClass]="{'disabled': ( pageNumber <= 1 ) }">
+            <li class="page-item " [ngClass]="{'disabled': ( pageNumber <= 1 ) }">
                 <a class="page-link" (click)="goToPage(pageNumber-1)" style="cursor:pointer">Previous</a>
             </li>
 
@@ -31,5 +31,5 @@
             </li>
         </ul>
     </nav>
-
+    <br>
 </div>
