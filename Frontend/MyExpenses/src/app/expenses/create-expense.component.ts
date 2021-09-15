@@ -15,7 +15,7 @@ export class CreateExpenseComponent implements OnInit{
 
     categories!: string[]
     CategoryEnumType = CategoryType
-    isDirty = true
+    mightBeDirty = true
 
     constructor(private router: Router, private expenseService: ExpenseService){
         
@@ -47,12 +47,18 @@ export class CreateExpenseComponent implements OnInit{
         }
 
         this.expenseService.saveExpense(expense).subscribe(() => {
-            this.isDirty = false
+            this.mightBeDirty = false
             this.router.navigate(["/expenses"], { queryParams: { message: "Saved" } })
         });
     }
 
     cancel(): void{
         this.router.navigate(["/expenses"])
+    }
+
+    IsDirty(): boolean{
+        if(this.mightBeDirty)
+            return this.newExpenseForm.dirty
+        return false;
     }
 }

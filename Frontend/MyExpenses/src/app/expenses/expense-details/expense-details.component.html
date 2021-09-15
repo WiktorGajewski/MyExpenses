@@ -1,15 +1,36 @@
-<div class="container">
+<div class="container mt-2">
+    <h1>Details</h1>
+    <hr />
     <div class="row">
-        <div class="col-md-11">
-            <h2>{{expense?.category | category}}</h2>
+        <div class="col-1 col-md-2"></div>
+        <div class="col-10 col-md-8">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action">
+                    <strong>Category:</strong><br>
+                    {{expense?.category | category}}
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <strong>Date:</strong><br>
+                    {{expense?.date | date:"d/M/y"}}
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <strong>Amount:</strong><br>
+                    {{expense?.value  | currency:"USD"}}
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <div>
+                        <strong>Description:</strong><br>
+                        <span class="description">{{expense?.description}}</span>
+                    </div>
+                </li>
+            </ul>
+            
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-11">
-            <div><strong>Date:</strong> {{expense?.date | date:"d/M/y"}}</div>
-            <div><strong>Value:</strong> {{expense?.value  | currency:"USD"}}</div>
-            <div><strong>Description:</strong> {{expense?.description}}</div>
+    <div class="row mt-2">
+        <div class="col-1 col-md-2"></div>
+        <div class="col-10 col-md-8 text-center">
+            <button type="button" class="btn btn-outline-primary btn-lg" (click)="returnToList()">Return</button>
         </div>
     </div>
 </div>

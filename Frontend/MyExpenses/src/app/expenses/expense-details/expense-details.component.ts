@@ -4,7 +4,13 @@ import { IExpense } from "../shared";
 import { ExpenseService } from "../shared/expense.service";
 
 @Component({
-    templateUrl: "./expense-details.component.html"
+    templateUrl: "./expense-details.component.html",
+    styles:[`
+        .description { 
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+    `]
 })
 export class ExpenseDetailsComponent{
     expense: IExpense|undefined
@@ -21,5 +27,9 @@ export class ExpenseDetailsComponent{
                 this.router.navigate(["/404"])
             }
         })
+    }
+
+    returnToList(): void{
+        this.router.navigate(["/expenses"])
     }
 }

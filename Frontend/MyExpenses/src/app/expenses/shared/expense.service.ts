@@ -14,7 +14,7 @@ export class ExpenseService{
 
     }
 
-    getExpenses(pageNumber = 1, pageSize = 10): Observable<IExpensesPage>
+    getExpenses(pageNumber = 1, pageSize = 3): Observable<IExpensesPage>
     {
         const params = new HttpParams()
             .set("PageNumber", pageNumber)

@@ -41,7 +41,7 @@ import { FooterComponent } from "./nav/footer.component";
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {scrollPositionRestoration: "enabled"}),
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -65,7 +65,7 @@ import { FooterComponent } from "./nav/footer.component";
 export class AppModule { }
 
 export function checkDirtyState(component:CreateExpenseComponent): boolean{
-  if(component.isDirty){
+  if(component.IsDirty()){
     return window.confirm("You have not saved this, do you really want to cancel?")
   }
   return true

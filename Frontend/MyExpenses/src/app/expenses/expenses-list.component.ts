@@ -55,8 +55,9 @@ export class ExpensesListComponent implements OnInit{
     }
 
     goToPage(newPage: number): void{
-        if(newPage > 0 && newPage <= this.totalPages)
+        if(newPage > 0)
         {
+            window.scrollTo(0,0)
             this.router.navigate(["/expenses"], { queryParams: { page: newPage } })
         }
     }
