@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IExpense } from "./shared";
+import { CategoryType, IExpense } from "./shared";
+import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
     templateUrl: "./expenses-list.component.html",
@@ -33,6 +34,16 @@ export class ExpensesListComponent implements OnInit{
 
     additionalPageLinks!: number[]
 
+    searchTermForm!: FormGroup
+    searchByTerm!: FormControl
+    searchByCategory!: FormControl
+
+    searchTerm: string|undefined
+    searchCategory: string|undefined
+
+    categories!: string[]
+    CategoryEnumType = CategoryType
+
     constructor(private toastr: ToastrService,
             private route: ActivatedRoute,
             private router: Router){
@@ -48,6 +59,18 @@ export class ExpensesListComponent implements OnInit{
         {
             this.handleToastr(message)
         }
+
+        this.searchTerm = this.route.snapshot.queryParams["searchTerm"]
+        this.searchCategory = this.route.snapshot.queryParams["category"]
+
+        this.searchByTerm = new FormControl(this.searchTerm)
+        this.searchByCategory = new FormControl(this.searchCategory)
+        this.searchTermForm = new FormGroup({
+            searchByTerm: this.searchByTerm,
+            searchByCategory: this.searchByCategory
+        })
+
+        this.categories= Object.keys(this.CategoryEnumType).filter(f => isNaN(Number(f)))
     }
 
     handleToastr(message: string|undefined): void{
@@ -58,8 +81,14 @@ export class ExpensesListComponent implements OnInit{
         if(newPage > 0)
         {
             window.scrollTo(0,0)
-            this.router.navigate(["/expenses"], { queryParams: { page: newPage } })
+            this.router.navigate(["/expenses"], { queryParams: { page: newPage, searchTerm: this.searchTerm, category: this.searchCategory } })
         }
+    }
+
+    filter(formValues: any): void{
+        this.searchTerm = formValues.searchByTerm;
+        this.searchCategory = formValues.searchByCategory
+        this.router.navigate(["/expenses"], { queryParams: { page: this.pageNumber, searchTerm: this.searchTerm, category: this.searchCategory } })
     }
 
     updatePage(): void{

@@ -29,13 +29,15 @@ namespace MyExpenses.API.Controllers
         [Produces("application/json","application/xml")]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<ExpenseGetDto>>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
-        public ActionResult<PagedResponse<IEnumerable<ExpenseGetDto>>> GetExpenses([FromQuery] PaginationFilter filter)
+        public ActionResult<PagedResponse<IEnumerable<ExpenseGetDto>>> GetExpenses([FromQuery] PaginationFilter filterPage,
+            [FromQuery] ExpenseFilter filter)
         {
-            var expenses = _expenseRepository.GetExpenses(filter.PageNumber, filter.PageSize);
+            var expenses = _expenseRepository.GetExpensesAndFilter(filterPage.PageNumber, filterPage.PageSize,
+                    filter.SearchTerm, filter.ExpenseCategory);
 
             return Ok(
-                    PaginationHelper.CreatePagedResponse(expenses, filter, _expenseRepository.CountExpenses())
-                );
+                PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(filter.SearchTerm, filter.ExpenseCategory))
+            );
         }
 
         [HttpHead]

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
 import { Observable } from "rxjs";
-import { IExpensesPage } from "./shared";
+import { CategoryType, IExpensesPage } from "./shared";
 import { ExpenseService } from "./shared/expense.service";
 
 @Injectable()
@@ -12,10 +12,13 @@ export class ExpenseListResolver implements Resolve<IExpensesPage>{
 
     resolve(route: ActivatedRouteSnapshot): Observable<IExpensesPage> {
         const page = route.queryParamMap.get("page")
+        const searchTerm = route.queryParamMap.get("searchTerm")
+        const category = route.queryParamMap.get("category")
+
         if(!isNaN(Number(page)) && Number(page) > 0)
         {
-            return this.expenseService.getExpenses(Number(page))
+            return this.expenseService.getExpenses(searchTerm, category, Number(page))
         }
-        return this.expenseService.getExpenses(1)
+        return this.expenseService.getExpenses(searchTerm, category, 1)
     }
 }

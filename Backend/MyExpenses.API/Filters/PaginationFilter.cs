@@ -14,7 +14,7 @@ namespace MyExpenses.API.Filters
         public PaginationFilter()
         {
             PageNumber = 1;
-            PageSize = 100;
+            PageSize = 20;
         }
     }
 }

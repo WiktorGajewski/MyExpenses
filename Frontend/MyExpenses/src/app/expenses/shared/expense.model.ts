@@ -7,8 +7,7 @@ export interface IExpense{
 }
 
 export enum CategoryType{
-    "None" = 0,
-    "Housing",
+    "Housing" = 1,
     "Transportation",
     "Taxes",
     "Food",

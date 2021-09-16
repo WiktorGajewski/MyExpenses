@@ -14,11 +14,23 @@ export class ExpenseService{
 
     }
 
-    getExpenses(pageNumber = 1, pageSize = 3): Observable<IExpensesPage>
+    getExpenses(searchTerm: any, category: any,
+        pageNumber = 1, pageSize = 3): Observable<IExpensesPage>
     {
-        const params = new HttpParams()
+        let params = new HttpParams()
             .set("PageNumber", pageNumber)
             .set("PageSize", pageSize);
+
+        if(searchTerm)
+        {
+            params = params.append("SearchTerm", searchTerm);
+        }
+
+
+        if(category)
+        {
+            params = params.append("ExpenseCategory", category)
+        }
 
         return this.http.get<IExpensesPage>(`${this.apiUrl}expenses`, {params})
             .pipe(catchError(this.handleError<IExpensesPage>(undefined)))

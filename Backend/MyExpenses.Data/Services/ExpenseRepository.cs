@@ -24,14 +24,80 @@ namespace MyExpenses.Data.Services
                 .ToList();
         }
 
+        public IEnumerable<Expense> GetExpensesAndFilter(int pageNumber, int pageSize, string searchTerm, ExpenseCategory category)
+        {
+            if(searchTerm is null && category != ExpenseCategory.None)
+            {
+                return _context.Expenses
+                    .Where(e => e.Category == category)
+                    .OrderByDescending(e => e.Date)
+                    .ThenByDescending(e => e.Id)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+
+            if(searchTerm is not null && category == ExpenseCategory.None)
+            {
+                return _context.Expenses
+                    .Where(e => e.Description.Contains(searchTerm))
+                    .OrderByDescending(e => e.Date)
+                    .ThenByDescending(e => e.Id)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+
+            if (searchTerm is not null && category != ExpenseCategory.None)
+            {
+                return _context.Expenses
+                    .Where(e => e.Category == category)
+                    .Where(e => e.Description.Contains(searchTerm))
+                    .OrderByDescending(e => e.Date)
+                    .ThenByDescending(e => e.Id)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+
+            return GetExpenses(pageNumber, pageSize);
+        }
+
         public IEnumerable<Expense> GetAllExpenses()
         {
             return _context.Expenses.ToList();
         }
 
-        public int CountExpenses()
+        public int CountAllExpenses()
         {
             return _context.Expenses.Count();
+        }
+
+        public int CountExpenses(string searchTerm, ExpenseCategory category)
+        {
+            if (searchTerm is null && category != ExpenseCategory.None)
+            {
+                return _context.Expenses
+                    .Where(e => e.Category == category)
+                    .Count();
+            }
+
+            if (searchTerm is not null && category == ExpenseCategory.None)
+            {
+                return _context.Expenses
+                    .Where(e => e.Description.Contains(searchTerm))
+                    .Count();
+            }
+
+            if (searchTerm is not null && category != ExpenseCategory.None)
+            {
+                return _context.Expenses
+                    .Where(e => e.Category == category)
+                    .Where(e => e.Description.Contains(searchTerm))
+                    .Count();
+            }
+
+            return CountAllExpenses();
         }
 
         public Expense GetExpense(int id)
