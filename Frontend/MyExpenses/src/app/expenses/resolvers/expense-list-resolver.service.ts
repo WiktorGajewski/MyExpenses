@@ -1,8 +1,11 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
 import { Observable } from "rxjs";
-import { CategoryType, IExpensesPage } from "./shared";
-import { ExpenseService } from "./shared/expense.service";
+
+import { 
+    IExpensesPage,
+    ExpenseService
+} from "../index";
 
 @Injectable()
 export class ExpenseListResolver implements Resolve<IExpensesPage>{

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { CategoryType, ExpenseService, IExpense } from "./shared";
+import { CategoryType, ExpenseService, IExpense } from "../index";
 
 @Component({
     templateUrl: "./create-expense.component.html"

@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IExpense } from "../shared";
-import { ExpenseService } from "../shared/expense.service";
+import { IExpense } from "../index";
 
 @Component({
     templateUrl: "./expense-details.component.html",

@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { IExpense } from "./shared";
+import { IExpense } from "../../index";
 
 @Component({
     selector: "expense-card",

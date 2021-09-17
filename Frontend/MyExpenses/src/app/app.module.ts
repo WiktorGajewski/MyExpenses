@@ -10,14 +10,16 @@ import { CollapseModule } from "ngx-bootstrap/collapse";
 import { ButtonsModule } from "ngx-bootstrap/buttons";
 
 import { ExpensesAppComponent } from "./expenses-app.component";
-import { NavBarComponent } from "./nav/navbar.component";
 import { appRoutes } from "./routes";
+import { NavBarComponent } from "./nav/navbar.component";
+import { FooterComponent } from "./nav/footer.component";
 import { Error404Component } from "./errors/404.component";
 
 import {
   ExpenseCardComponent,
   ExpensesListComponent,
   ExpenseDetailsComponent,
+  ExpenseStatisticsComponent,
   ExpenseService,
   CreateExpenseComponent,
   ExpenseListResolver,
@@ -25,7 +27,6 @@ import {
   ExpenseResolver
 } from "./expenses/index"
 import { AuthService } from "./user/auth.service";
-import { FooterComponent } from "./nav/footer.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { FooterComponent } from "./nav/footer.component";
     ExpensesListComponent,
     ExpenseCardComponent,
     ExpenseDetailsComponent,
+    ExpenseStatisticsComponent,
     NavBarComponent,
     FooterComponent,
     CreateExpenseComponent,

@@ -6,13 +6,15 @@ import {
     ExpenseDetailsComponent,
     ExpenseListResolver,
     ExpenseResolver,
-    ExpensesListComponent
+    ExpensesListComponent,
+    ExpenseStatisticsComponent
 } from "./expenses/index"
 
 export const appRoutes:Routes = [
     { path: "expenses", component: ExpensesListComponent,
         resolve: {expenses: ExpenseListResolver},
-        runGuardsAndResolvers: "paramsOrQueryParamsChange", },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange" },
+    { path: "expenses/statistics", component: ExpenseStatisticsComponent },
     { path: "expenses/new", component: CreateExpenseComponent,
         canDeactivate: ["canDeactivateCreateExpense"] },
     { path: "expenses/:id", component: ExpenseDetailsComponent,

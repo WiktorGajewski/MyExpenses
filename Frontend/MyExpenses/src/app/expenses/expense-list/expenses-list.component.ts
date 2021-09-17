@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CategoryType, IExpense } from "./shared";
 import { FormControl, FormGroup } from "@angular/forms";
+import { CategoryType, IExpense } from "../index";
 
 @Component({
     templateUrl: "./expenses-list.component.html",
