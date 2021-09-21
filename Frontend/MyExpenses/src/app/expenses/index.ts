@@ -9,6 +9,7 @@ export * from "./expense-statistics/expense-statistics.component"
 
 export * from "./resolvers/expense-list-resolver.service"
 export * from "./resolvers/expense-resolver.service"
+export * from "./resolvers/expense-statistics-resolver.service"
 
 export * from "./shared/expense.service"
 export * from "./shared/expense.model"

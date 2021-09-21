@@ -20,8 +20,8 @@ export class ExpenseListResolver implements Resolve<IExpensesPage>{
 
         if(!isNaN(Number(page)) && Number(page) > 0)
         {
-            return this.expenseService.getExpenses(searchTerm, category, Number(page))
+            return this.expenseService.getExpensesPage(searchTerm, category, Number(page))
         }
-        return this.expenseService.getExpenses(searchTerm, category, 1)
+        return this.expenseService.getExpensesPage(searchTerm, category, 1)
     }
 }

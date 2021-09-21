@@ -32,13 +32,26 @@ namespace MyExpenses.API.Controllers
         public ActionResult<PagedResponse<IEnumerable<ExpenseGetDto>>> GetExpenses([FromQuery] PaginationFilter filterPage,
             [FromQuery] ExpenseFilter filter)
         {
-            var expenses = _expenseRepository.GetExpensesAndFilter(filterPage.PageNumber, filterPage.PageSize,
-                    filter.SearchTerm, filter.ExpenseCategory);
 
-            return Ok(
-                PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(filter.SearchTerm, filter.ExpenseCategory))
-            );
+            if ( filterPage?.PageNumber != null && filterPage?.PageSize != null )
+            {
+                var expenses = _expenseRepository.GetExpensesAndFilter(filterPage.PageNumber.Value, filterPage.PageSize.Value,
+                    filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
+
+                return Ok(
+                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
+                );
+            }
+            else
+            {
+                var expenses = _expenseRepository.GetAllExpensesAndFilter(filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
+
+                return Ok(
+                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
+                );
+            }
         }
+
 
         [HttpHead]
         [Produces("application/json", "application/xml")]

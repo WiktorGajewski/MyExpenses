@@ -1,4 +1,21 @@
-<div class="container mt-2">
+<div class="container mt-2 mb-5">
     <h1>Statistics</h1>
     <hr />
+
+    <div class="row mb-5">
+        <div class="col-1 col-md-2"></div>
+        <div class="col-10 col-md-8">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action list-group-item-dark">
+                    <strong>Total Amount</strong><br>
+                    {{totalAmount | currency:"USD":"symbol":"1.2-2"}}
+                </li>
+                <li class="list-group-item list-group-item-action" *ngFor="let category of amountPerCategory">
+                    <strong>{{category.category | category}}</strong><br>
+                    {{category.value | currency:"USD":"symbol":"1.2-2"}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
 </div>

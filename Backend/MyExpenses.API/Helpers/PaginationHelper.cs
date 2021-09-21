@@ -12,12 +12,19 @@ namespace MyExpenses.API.Helpers
             PaginationFilter filter,
             int totalRecords)
         {
-            var totalPages = ((double)totalRecords / (double)filter.PageSize);
-            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
+            int? roundedTotalPages = null;
+
+            if (filter?.PageSize != null)
+            {
+                var totalPages = ((double)totalRecords / (double)filter.PageSize);
+
+                roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+            }
 
             return new PagedResponse<IEnumerable<T>>(pagedData,
-                filter.PageNumber,
-                filter.PageSize,
+                filter?.PageNumber,
+                filter?.PageSize,
                 roundedTotalPages,
                 totalRecords);
         }

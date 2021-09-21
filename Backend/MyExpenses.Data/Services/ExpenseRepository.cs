@@ -1,5 +1,6 @@
 ﻿using MyExpenses.Core.Entities;
 using MyExpenses.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace MyExpenses.Data.Services
                 .ToList();
         }
 
-        public IEnumerable<Expense> GetExpensesAndFilter(int pageNumber, int pageSize, string searchTerm, ExpenseCategory category)
+        public IEnumerable<Expense> GetExpensesAndFilter(int pageNumber, int pageSize, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
             var expenses = _context.Expenses.AsQueryable();
 
@@ -38,6 +39,16 @@ namespace MyExpenses.Data.Services
                 expenses = FilterExpensesByCategory(expenses, category);
             }
 
+            if (startDate.HasValue)
+            {
+                expenses = FilterExpensesByStartDate(expenses, startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                expenses = FilterExpensesByEndDate(expenses, endDate.Value);
+            }
+
             return expenses
                     .OrderByDescending(e => e.Date)
                     .ThenByDescending(e => e.Id)
@@ -46,19 +57,36 @@ namespace MyExpenses.Data.Services
                     .ToList();
         }
 
-        private IQueryable<Expense> FilterExpensesByCategory(IQueryable<Expense> expenses, ExpenseCategory category)
-        {
-            return expenses.Where(e => e.Category == category);
-        }
-
-        private IQueryable<Expense> FilterExpensesBySearchTerm(IQueryable<Expense> expenses, string searchTerm)
-        {
-            return expenses.Where(e => e.Description.Contains(searchTerm));
-        }
-
         public IEnumerable<Expense> GetAllExpenses()
         {
             return _context.Expenses.ToList();
+        }
+
+        public IEnumerable<Expense> GetAllExpensesAndFilter(string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
+        {
+            var expenses = _context.Expenses.AsQueryable();
+
+            if (searchTerm is not null)
+            {
+                expenses = FilterExpensesBySearchTerm(expenses, searchTerm);
+            }
+
+            if (category != ExpenseCategory.None)
+            {
+                expenses = FilterExpensesByCategory(expenses, category);
+            }
+
+            if(startDate.HasValue)
+            {
+                expenses = FilterExpensesByStartDate(expenses, startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                expenses = FilterExpensesByEndDate(expenses, endDate.Value);
+            }
+
+            return expenses.ToList();
         }
 
         public int CountAllExpenses()
@@ -66,31 +94,31 @@ namespace MyExpenses.Data.Services
             return _context.Expenses.Count();
         }
 
-        public int CountExpenses(string searchTerm, ExpenseCategory category)
+        public int CountExpenses(string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
-            if (searchTerm is null && category != ExpenseCategory.None)
+            var expenses = _context.Expenses.AsQueryable();
+
+            if (searchTerm is not null)
             {
-                return _context.Expenses
-                    .Where(e => e.Category == category)
-                    .Count();
+                expenses = FilterExpensesBySearchTerm(expenses, searchTerm);
             }
 
-            if (searchTerm is not null && category == ExpenseCategory.None)
+            if (category != ExpenseCategory.None)
             {
-                return _context.Expenses
-                    .Where(e => e.Description.Contains(searchTerm))
-                    .Count();
+                expenses = FilterExpensesByCategory(expenses, category);
             }
 
-            if (searchTerm is not null && category != ExpenseCategory.None)
+            if (startDate.HasValue)
             {
-                return _context.Expenses
-                    .Where(e => e.Category == category)
-                    .Where(e => e.Description.Contains(searchTerm))
-                    .Count();
+                expenses = FilterExpensesByStartDate(expenses, startDate.Value);
             }
 
-            return CountAllExpenses();
+            if (endDate.HasValue)
+            {
+                expenses = FilterExpensesByEndDate(expenses, endDate.Value);
+            }
+
+            return expenses.Count();
         }
 
         public Expense GetExpense(int id)
@@ -121,6 +149,26 @@ namespace MyExpenses.Data.Services
         public bool Save()
         {
             return _context.SaveChanges() > 0;
+        }
+
+        private IQueryable<Expense> FilterExpensesByCategory(IQueryable<Expense> expenses, ExpenseCategory category)
+        {
+            return expenses.Where(e => e.Category == category);
+        }
+
+        private IQueryable<Expense> FilterExpensesBySearchTerm(IQueryable<Expense> expenses, string searchTerm)
+        {
+            return expenses.Where(e => e.Description.Contains(searchTerm));
+        }
+
+        private IQueryable<Expense> FilterExpensesByStartDate(IQueryable<Expense> expenses, DateTime startDate)
+        {
+            return expenses.Where(e => e.Date >= startDate);
+        }
+
+        private IQueryable<Expense> FilterExpensesByEndDate(IQueryable<Expense> expenses, DateTime endDate)
+        {
+            return expenses.Where(e => e.Date <= endDate);
         }
     }
 }

@@ -24,7 +24,8 @@ import {
   CreateExpenseComponent,
   ExpenseListResolver,
   CategoryPipe,
-  ExpenseResolver
+  ExpenseResolver,
+  ExpenseStatisticsResolver
 } from "./expenses/index"
 import { AuthService } from "./user/auth.service";
 
@@ -56,6 +57,7 @@ import { AuthService } from "./user/auth.service";
     ExpenseService,
     ExpenseListResolver,
     ExpenseResolver,
+    ExpenseStatisticsResolver,
     AuthService,
     { 
       provide: "canDeactivateCreateExpense",
