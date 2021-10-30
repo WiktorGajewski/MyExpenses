@@ -15,19 +15,21 @@ namespace MyExpenses.Data.Services
             _context = context;
         }
 
-        public IEnumerable<Expense> GetExpenses(int pageNumber, int pageSize)
-        {
-            return _context.Expenses
-                .OrderByDescending(e => e.Date)
-                .ThenByDescending(e => e.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-        }
+        //public IEnumerable<Expense> GetExpenses(int pageNumber, int pageSize)
+        //{
+        //    return _context.Expenses
+        //        .OrderByDescending(e => e.Date)
+        //        .ThenByDescending(e => e.Id)
+        //        .Skip((pageNumber - 1) * pageSize)
+        //        .Take(pageSize)
+        //        .ToList();
+        //}
 
-        public IEnumerable<Expense> GetExpensesAndFilter(int pageNumber, int pageSize, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
+        public IEnumerable<Expense> GetExpensesAndFilter(string userId, int pageNumber, int pageSize, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
             var expenses = _context.Expenses.AsQueryable();
+
+            expenses = FilterExpensesByUserId(expenses, userId);
 
             if(searchTerm is not null)
             {
@@ -57,14 +59,16 @@ namespace MyExpenses.Data.Services
                     .ToList();
         }
 
-        public IEnumerable<Expense> GetAllExpenses()
-        {
-            return _context.Expenses.ToList();
-        }
+        //public IEnumerable<Expense> GetAllExpenses()
+        //{
+        //    return _context.Expenses.ToList();
+        //}
 
-        public IEnumerable<Expense> GetAllExpensesAndFilter(string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
+        public IEnumerable<Expense> GetAllExpensesAndFilter(string userId, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
             var expenses = _context.Expenses.AsQueryable();
+
+            expenses = FilterExpensesByUserId(expenses, userId);
 
             if (searchTerm is not null)
             {
@@ -89,14 +93,16 @@ namespace MyExpenses.Data.Services
             return expenses.ToList();
         }
 
-        public int CountAllExpenses()
-        {
-            return _context.Expenses.Count();
-        }
+        //public int CountAllExpenses()
+        //{
+        //    return _context.Expenses.Count();
+        //}
 
-        public int CountExpenses(string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
+        public int CountExpenses(string userId, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
             var expenses = _context.Expenses.AsQueryable();
+
+            expenses = FilterExpensesByUserId(expenses, userId);
 
             if (searchTerm is not null)
             {
@@ -127,10 +133,13 @@ namespace MyExpenses.Data.Services
                 FirstOrDefault(e => e.Id == id);
         }
 
-        public void AddExpense(Expense newExpense)
+        public void AddExpense(string userId, Expense newExpense)
         {
             if(newExpense != null)
             {
+                newExpense.UserId = userId;
+                newExpense.User = _context.Users.FirstOrDefault(u => u.Id == userId);
+
                 _context.Expenses.Add(newExpense);
             }
         }
@@ -169,6 +178,11 @@ namespace MyExpenses.Data.Services
         private IQueryable<Expense> FilterExpensesByEndDate(IQueryable<Expense> expenses, DateTime endDate)
         {
             return expenses.Where(e => e.Date <= endDate);
+        }
+
+        private IQueryable<Expense> FilterExpensesByUserId(IQueryable<Expense> expenses, string userId)
+        {
+            return expenses.Where(e => e.UserId == userId);
         }
     }
 }

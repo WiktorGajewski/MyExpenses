@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
 import { Observable } from "rxjs";
@@ -9,14 +10,28 @@ import {
 
 @Injectable()
 export class ExpenseStatisticsResolver implements Resolve<IExpensesPage>{
-    constructor(private expenseService :ExpenseService){
+    constructor(private expenseService :ExpenseService, private datePipe: DatePipe){
 
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<IExpensesPage>{
-        const searchTerm = route.queryParamMap.get("searchTerm")
         const category = route.queryParamMap.get("category")
+        let startDate = route.queryParamMap.get("startDate")
+        let endDate = route.queryParamMap.get("endDate")
 
-        return this.expenseService.getExpenseStatistics(searchTerm, category)
+        if(!startDate)
+        {
+            const date = new Date()
+            date.setMonth(date.getMonth() - 1)
+            startDate = this.datePipe.transform(date, "yyyy-MM-dd")
+        }   
+
+        if(!endDate)
+        {
+            const date = new Date()
+            endDate = this.datePipe.transform(date, "yyyy-MM-dd")
+        }
+
+        return this.expenseService.getExpenseStatistics(category, startDate, endDate)
     }
 }

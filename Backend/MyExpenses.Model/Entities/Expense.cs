@@ -20,5 +20,8 @@ namespace MyExpenses.Core.Entities
         public DateTime Date { get; set; }
 
         public ExpenseCategory Category { get; set; }
+
+        public string UserId { get; set; }
+        public User User { get; set; }
     }
 }

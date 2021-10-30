@@ -8,6 +8,11 @@
         public int? TotalRecords { get; set; }
         public T Data { get; set; }
 
+        public PagedResponse()
+        {
+
+        }
+
         public PagedResponse(T data, int? pageNumber, int? pageSize, int? totalPages, int? totalRecords)
         {
             Data = data;

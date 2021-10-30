@@ -35,25 +35,28 @@ export class ExpenseService{
             .pipe(catchError(this.handleError<IExpensesPage>(undefined)))
     }
 
-    //work in progress
-    getExpenseStatistics(searchTerm: any, category: any): Observable<IExpensesPage>
+    getExpenseStatistics(category: any, startDate: any, endDate: any): Observable<IExpensesPage>
     {
         let params = new HttpParams();
-
-        if(searchTerm)
-        {
-            params = params.append("SearchTerm", searchTerm);
-        }
 
         if(category)
         {
             params = params.append("ExpenseCategory", category)
         }
 
+        if(startDate)
+        {
+            params = params.append("StartDate", startDate)
+        }
+
+        if(endDate)
+        {
+            params = params.append("EndDate", endDate)
+        }
+
         return this.http.get<IExpensesPage>(`${this.apiUrl}expenses`, {params})
             .pipe(catchError(this.handleError<IExpensesPage>(undefined)))
     }
-    //work in progress
 
     getExpense(id:number):Observable<IExpense>
     {

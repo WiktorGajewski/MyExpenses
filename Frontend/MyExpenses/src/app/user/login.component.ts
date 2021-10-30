@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { GoogleLoginProvider, SocialAuthService } from "angularx-social-login";
 import { AuthService } from "./auth.service";
 
 @Component({
@@ -9,20 +10,25 @@ import { AuthService } from "./auth.service";
     `]
 })
 export class LoginComponent{
-    userName: string | undefined
-    password: string | undefined
-    mouseoverLogin = false
+    errorMessage: string | undefined
 
-    constructor(private authService:AuthService, private router:Router){
+    constructor(private authService:AuthService, private router:Router, 
+        public socialAuthService: SocialAuthService){
 
     }
 
-    login(formValues: any): void{
-        this.authService.loginUser(formValues.userName, formValues.password)
-        this.router.navigate(["expenses"])
-    }
+    signInWithGoogle(): void{
+        const socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
 
-    cancel(): void{
-        this.router.navigate(["expenses"])
+        this.socialAuthService.signIn(socialPlatformProvider)
+            .then((userData) => {                
+                this.authService.signInWithGoogle(userData.idToken)
+
+                console.log("Hello "+ userData.firstName)
+                console.log("Token "+ userData.idToken)
+
+
+                this.router.navigate(["expenses"])
+            });
     }
 }

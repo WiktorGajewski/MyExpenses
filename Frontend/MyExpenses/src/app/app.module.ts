@@ -3,7 +3,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { DatePipe } from "@angular/common";
 
 import { ToastrModule } from "ngx-toastr";
 import { CollapseModule } from "ngx-bootstrap/collapse";
@@ -25,9 +26,12 @@ import {
   ExpenseListResolver,
   CategoryPipe,
   ExpenseResolver,
-  ExpenseStatisticsResolver
+  ExpenseStatisticsResolver,
+  AuthGuard,
+  ErrorInterceptor
 } from "./expenses/index"
 import { AuthService } from "./user/auth.service";
+import { AuthInterceptor } from "./user/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -51,7 +55,8 @@ import { AuthService } from "./user/auth.service";
     HttpClientModule,
     ToastrModule.forRoot(),
     CollapseModule.forRoot(),
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    HttpClientModule
   ],
   providers: [
     ExpenseService,
@@ -59,9 +64,21 @@ import { AuthService } from "./user/auth.service";
     ExpenseResolver,
     ExpenseStatisticsResolver,
     AuthService,
+    DatePipe,
+    AuthGuard,
     { 
       provide: "canDeactivateCreateExpense",
       useValue: checkDirtyState 
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
     }
   ],
   bootstrap: [ExpensesAppComponent]

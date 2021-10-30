@@ -15,6 +15,8 @@ export * from "./shared/expense.service"
 export * from "./shared/expense.model"
 export * from "./shared/expenses-page.model"
 export * from "./shared/category.pipe"
+export * from "./shared/auth.guard"
+export * from "./shared/error.interceptor"
 
 
 

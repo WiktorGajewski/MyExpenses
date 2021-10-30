@@ -9,6 +9,12 @@ using MyExpenses.Data.Interfaces;
 using MyExpenses.Data.Services;
 using System;
 using Microsoft.OpenApi.Models;
+using MyExpenses.API.Handlers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using MyExpenses.Core.Entities;
 
 namespace MyExpenses.API
 {
@@ -44,9 +50,36 @@ namespace MyExpenses.API
                 options.UseSqlServer(_configuration.GetConnectionString("MyExpensesDb"));
             });
 
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<MyExpensesDbContext>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o =>
+                {
+                    o.RequireHttpsMetadata = true;
+                    o.SaveToken = true;
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+
+                        ValidIssuer = _configuration["JWT:Issuer"],
+                        ValidAudience = _configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]))
+                    };
+                });
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IAuthHandler, AuthHandler>();
 
             services.AddCors(options =>
             {
@@ -81,7 +114,10 @@ namespace MyExpenses.API
 
             app.UseStatusCodePages();
 
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

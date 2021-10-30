@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MyExpenses.API.Extensions;
@@ -9,6 +11,7 @@ using MyExpenses.API.Wrappers;
 using MyExpenses.Core.Entities;
 using MyExpenses.Data.Interfaces;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace MyExpenses.API.Controllers
 {
@@ -18,54 +21,67 @@ namespace MyExpenses.API.Controllers
     {
         private readonly IExpenseRepository _expenseRepository;
         private readonly IMapper _mapper;
+        private readonly string _currentUserId;
 
-        public ExpensesController(IExpenseRepository expenseRepository, IMapper mapper)
+        public ExpensesController(IExpenseRepository expenseRepository, IMapper mapper, IHttpContextAccessor httpContext)
         {
             _expenseRepository = expenseRepository;
             _mapper = mapper;
+            _currentUserId = httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+
+        [Route("id")]
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetId()
+        {
+            return Ok(_currentUserId);
         }
 
         [HttpGet]
+        [Authorize]
         [Produces("application/json","application/xml")]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<ExpenseGetDto>>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         public ActionResult<PagedResponse<IEnumerable<ExpenseGetDto>>> GetExpenses([FromQuery] PaginationFilter filterPage,
             [FromQuery] ExpenseFilter filter)
         {
 
             if ( filterPage?.PageNumber != null && filterPage?.PageSize != null )
             {
-                var expenses = _expenseRepository.GetExpensesAndFilter(filterPage.PageNumber.Value, filterPage.PageSize.Value,
+                var expenses = _expenseRepository.GetExpensesAndFilter(_currentUserId, filterPage.PageNumber.Value, filterPage.PageSize.Value,
                     filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
 
                 return Ok(
-                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
+                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
                 );
             }
             else
             {
-                var expenses = _expenseRepository.GetAllExpensesAndFilter(filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
+                var expenses = _expenseRepository.GetAllExpensesAndFilter(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
 
                 return Ok(
-                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
+                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
                 );
             }
         }
 
 
-        [HttpHead]
-        [Produces("application/json", "application/xml")]
-        [ProducesResponseType(typeof(EmptyResult), 200)]
-        public ActionResult<IEnumerable<ExpenseGetDto>> HeadExpenses()
-        {
-            var expenses = _expenseRepository.GetAllExpenses();
+        //[HttpHead]
+        //[Produces("application/json", "application/xml")]
+        //[ProducesResponseType(typeof(EmptyResult), 200)]
+        //public ActionResult<IEnumerable<ExpenseGetDto>> HeadExpenses()
+        //{
+        //    var expenses = _expenseRepository.GetAllExpenses(_currentUserId);
 
-            return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
-        }
+        //    return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
+        //}
 
         [HttpGet("{id}", Name = "GetExpense")]
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(ExpenseGetDto), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public ActionResult<ExpenseGetDto> GetExpense(int id)
         {
@@ -74,6 +90,11 @@ namespace MyExpenses.API.Controllers
             if (expense == null)
             {
                 return NotFound();
+            }
+
+            if (expense.UserId != _currentUserId)
+            {
+                return Forbid();
             }
 
             return Ok(_mapper.Map<ExpenseGetDto>(expense));
@@ -98,7 +119,7 @@ namespace MyExpenses.API.Controllers
         {
             var newExpenseEntity = _mapper.Map<Expense>(newExpense);
 
-            _expenseRepository.AddExpense(newExpenseEntity);
+            _expenseRepository.AddExpense(_currentUserId, newExpenseEntity);
             _expenseRepository.Save();
             
             var createdExpense = _mapper.Map<ExpenseGetDto>(newExpenseEntity);
@@ -111,6 +132,7 @@ namespace MyExpenses.API.Controllers
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult UpdateExpense(int id, [FromBody] ExpenseUpdateDto updatedExpense)
         {
@@ -119,6 +141,11 @@ namespace MyExpenses.API.Controllers
             if (expense == null)
             {
                 return NotFound();
+            }
+
+            if (expense.UserId != _currentUserId)
+            {
+                return Forbid();
             }
 
             _mapper.Map(updatedExpense, expense);
@@ -134,6 +161,7 @@ namespace MyExpenses.API.Controllers
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult PartiallyUpdateExpense(int id, [FromBody] JsonPatchDocument<ExpenseUpdateDto> patchDocument)
         {
@@ -142,6 +170,11 @@ namespace MyExpenses.API.Controllers
             if (expense == null)
             {
                 return NotFound();
+            }
+
+            if (expense.UserId != _currentUserId)
+            {
+                return Forbid();
             }
 
             var expenseToPatch = _mapper.Map<ExpenseUpdateDto>(expense);
@@ -169,6 +202,7 @@ namespace MyExpenses.API.Controllers
         [HttpDelete("{id}")]
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult DeleteExpense(int id)
         {
@@ -177,6 +211,11 @@ namespace MyExpenses.API.Controllers
             if (expense == null)
             {
                 return NotFound();
+            }
+
+            if(expense.UserId != _currentUserId)
+            {
+                return Forbid();
             }
 
             _expenseRepository.DeleteExpense(expense);
