@@ -14,14 +14,14 @@ export class ExpenseListResolver implements Resolve<IExpensesPage>{
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<IExpensesPage> {
-        const page = route.queryParamMap.get("page")
-        const searchTerm = route.queryParamMap.get("searchTerm")
-        const category = route.queryParamMap.get("category")
+        const page = route.queryParamMap.get("page");
+        const searchTerm = route.queryParamMap.get("searchTerm");
+        const category = route.queryParamMap.get("category");
 
         if(!isNaN(Number(page)) && Number(page) > 0)
         {
-            return this.expenseService.getExpensesPage(searchTerm, category, Number(page))
+            return this.expenseService.getExpensesPage(searchTerm, category, Number(page));
         }
-        return this.expenseService.getExpensesPage(searchTerm, category, 1)
+        return this.expenseService.getExpensesPage(searchTerm, category, 1);
     }
 }

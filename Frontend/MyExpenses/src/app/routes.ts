@@ -1,16 +1,19 @@
 import { Routes } from "@angular/router";
+import { AuthGuard } from "./auth/auth.guard";
+import { Error401Component } from "./errors/401.component";
+import { Error403Component } from "./errors/403.component";
 import { Error404Component } from "./errors/404.component";
+import { HomeComponent } from "./home/home.component";
 
 import {
     CreateExpenseComponent,
     ExpenseDetailsComponent,
-    AuthGuard,
     ExpenseListResolver,
     ExpenseResolver,
     ExpensesListComponent,
     ExpenseStatisticsComponent,
     ExpenseStatisticsResolver
-} from "./expenses/index"
+} from "./expenses/index";
 
 export const appRoutes:Routes = [
     { path: "expenses", component: ExpensesListComponent,
@@ -27,13 +30,10 @@ export const appRoutes:Routes = [
     { path: "expenses/:id", component: ExpenseDetailsComponent,
         canActivate: [AuthGuard],
         resolve: {expense: ExpenseResolver} },
+    { path: "home", component: HomeComponent },
     { path: "404", component: Error404Component },
+    { path: "403", component: Error403Component },
+    { path: "401", component: Error401Component },
     { path: "", redirectTo: "expenses", pathMatch: "full" },
-    { 
-        path: "user",
-        loadChildren: () => import("./user/user.module")
-            .then(m => m.UserModule)
-    },
-
     { path: "**", pathMatch: "full", component: Error404Component }
 ]

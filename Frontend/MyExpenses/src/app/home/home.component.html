@@ -1,0 +1,17 @@
+<div class="container mt-5 border border-dark rounded text-dark p-3">
+    <div style="text-align: center">
+        <h3>MyExpenses</h3>
+        <h1>Welcome</h1>
+    </div>
+    <div *ngIf="!auth.isUserLoggedIn" class="text-center mt-4">
+                <button type="button" class="btn btn-outline-dark btn-lg" (click)="signInWithGoogle()"
+                    [routerLink]="['/home']">Login</button>
+    </div>
+    <div *ngIf="auth.isUserLoggedIn" class="text-center mt-3 btn-lg">
+        <div class="btn-group-vertical">
+            <button type="button" class="btn btn-outline-dark" [routerLink]="['/expenses']">List of Expenses</button>
+            <button type="button" class="btn btn-outline-dark" [routerLink]="['/expenses/new']">Add Expense</button>
+            <button type="button" class="btn btn-outline-dark" [routerLink]="['/expenses/statistics']">Expense Statistics</button>
+        </div>
+    </div>
+</div>

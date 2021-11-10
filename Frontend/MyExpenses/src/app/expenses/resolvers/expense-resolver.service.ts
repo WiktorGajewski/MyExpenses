@@ -14,12 +14,12 @@ export class ExpenseResolver implements Resolve<IExpense>{
     }
 
     resolve(route: ActivatedRouteSnapshot): Observable<IExpense>{
-        const id = route.paramMap.get("id")
+        const id = route.paramMap.get("id");
 
         if(!isNaN(Number(id))){
-            return this.expenseService.getExpense(Number(id))
+            return this.expenseService.getExpense(Number(id));
         }
 
-        return this.expenseService.getExpense(-1)
+        return this.expenseService.getExpense(-1);
     }
 }

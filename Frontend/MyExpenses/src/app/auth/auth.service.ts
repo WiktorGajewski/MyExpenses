@@ -6,14 +6,14 @@ import { IAuthentication } from "./authentication.model";
 
 @Injectable()
 export class AuthService{
-    isUserLoggedIn = false
+    isUserLoggedIn = false;
 
     private readonly apiUrl = environment.apiUrl;
     
     constructor(private http: HttpClient){
         const isUserLoggedIn = localStorage.getItem("isUserLoggedIn")
         if(isUserLoggedIn != null && isUserLoggedIn == "true") {
-            this.isUserLoggedIn = true
+            this.isUserLoggedIn = true;
         }
     }
 
@@ -23,9 +23,9 @@ export class AuthService{
     }
 
     logout(): void{
-        localStorage.removeItem("id_token")
-        localStorage.removeItem("expires_at")
-        localStorage.removeItem("isUserLoggedIn")
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("expires_at");
+        localStorage.removeItem("isUserLoggedIn");
         this.isUserLoggedIn = false;
     }
 
@@ -37,35 +37,33 @@ export class AuthService{
         this.sendRequestToApi(token).subscribe(
             data => { 
                 if(data.isAuthenticated){
-                    console.log("Authorized")
-                    this.setSession(data)
-                    this.login()
+                    this.setSession(data);
+                    this.login();
                 }
                 else{
-                    console.log("error:  401 Unauthorized") 
+                    console.log("error:  401 Unauthorized");
                 }
             },
-            error => { console.log("error: " + error?.message || error) }
+            error => { console.log("error: " + error?.message || error); }
         )
     }
 
     setSession(authResult: IAuthentication): void{
-        const expiresAt = new Date()
-        expiresAt.setMinutes(expiresAt.getMinutes() + authResult.durationInMinutes)
-        console.log(expiresAt)
+        const expiresAt = new Date();
+        expiresAt.setMinutes(expiresAt.getMinutes() + authResult.durationInMinutes);
 
-        localStorage.setItem("id_token", authResult.token)
-        localStorage.setItem("expires_at", JSON.stringify(expiresAt))
-        localStorage.setItem("isUserLoggedIn", "true")
+        localStorage.setItem("id_token", authResult.token);
+        localStorage.setItem("expires_at", JSON.stringify(expiresAt));
+        localStorage.setItem("isUserLoggedIn", "true");
     }
 
     getExpiration(): string | null {
-        const expiration = localStorage.getItem("expires_at")
+        const expiration = localStorage.getItem("expires_at");
         return expiration;
     }
 
     getToken(): string | null {
-        const token = localStorage.getItem("id_token")
+        const token = localStorage.getItem("id_token");
         return token;
     }
 }

@@ -12,7 +12,7 @@ import { IExpense } from "../index";
     `]
 })
 export class ExpenseDetailsComponent{
-    expense: IExpense|undefined
+    expense: IExpense|undefined;
     
     constructor(private route:ActivatedRoute, private router: Router){
 
@@ -20,15 +20,15 @@ export class ExpenseDetailsComponent{
 
     ngOnInit(): void{
         this.route.data.forEach((data)=> {
-            this.expense = data["expense"]
+            this.expense = data["expense"];
 
             if(!this.expense){
-                this.router.navigate(["/404"])
+                this.router.navigate(["/404"]);
             }
         })
     }
 
     returnToList(): void{
-        this.router.navigate(["/expenses"])
+        this.router.navigate(["/expenses"]);
     }
 }

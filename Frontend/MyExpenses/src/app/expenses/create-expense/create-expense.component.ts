@@ -7,34 +7,34 @@ import { CategoryType, ExpenseService, IExpense } from "../index";
     templateUrl: "./create-expense.component.html"
 })
 export class CreateExpenseComponent implements OnInit{
-    newExpenseForm!: FormGroup
-    description!: FormControl
-    date!: FormControl
-    value!: FormControl
-    category!: FormControl
+    newExpenseForm!: FormGroup;
+    description!: FormControl;
+    date!: FormControl;
+    value!: FormControl;
+    category!: FormControl;
 
-    categories!: string[]
-    CategoryEnumType = CategoryType
-    mightBeDirty = true
+    categories!: string[];
+    CategoryEnumType = CategoryType;
+    mightBeDirty = true;
 
     constructor(private router: Router, private expenseService: ExpenseService){
         
     }
 
     ngOnInit(): void{
-        this.description = new FormControl("", [Validators.required, Validators.maxLength(200)])
-        this.date = new FormControl("", Validators.required)
-        this.value = new FormControl("", [Validators.required, Validators.pattern(/^[+]?([0-9]+(?:[.][0-9]{0,2})?|\.[0-9]{1,2})$/)])
-        this.category = new FormControl(null, Validators.required)
+        this.description = new FormControl("", [Validators.required, Validators.maxLength(200)]);
+        this.date = new FormControl("", Validators.required);
+        this.value = new FormControl("", [Validators.required, Validators.pattern(/^[+]?([0-9]+(?:[.][0-9]{0,2})?|\.[0-9]{1,2})$/)]);
+        this.category = new FormControl(null, Validators.required);
 
         this.newExpenseForm = new FormGroup({
             description: this.description,
             date: this.date,
             value: this.value,
             category: this.category
-        })
+        });
 
-        this.categories= Object.keys(this.CategoryEnumType).filter(f => isNaN(Number(f)))
+        this.categories= Object.keys(this.CategoryEnumType).filter(f => isNaN(Number(f)));
     }
 
     saveExpense(formValues: any): void{
@@ -44,7 +44,7 @@ export class CreateExpenseComponent implements OnInit{
             date: new Date(formValues.date),
             value: +formValues.value,
             category: formValues.category
-        }
+        };
 
         this.expenseService.saveExpense(expense).subscribe(() => {
             this.mightBeDirty = false
@@ -53,12 +53,12 @@ export class CreateExpenseComponent implements OnInit{
     }
 
     cancel(): void{
-        this.router.navigate(["/expenses"])
+        this.router.navigate(["/expenses"]);
     }
 
     IsDirty(): boolean{
         if(this.mightBeDirty)
-            return this.newExpenseForm.dirty
+            return this.newExpenseForm.dirty;
         return false;
     }
 }

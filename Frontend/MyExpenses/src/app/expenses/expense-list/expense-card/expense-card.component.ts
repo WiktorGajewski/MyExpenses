@@ -6,5 +6,5 @@ import { IExpense } from "../../index";
     templateUrl: "./expense-card.component.html"
 })
 export class ExpenseCardComponent{
-    @Input() expense:IExpense|undefined
+    @Input() expense:IExpense|undefined;
 }

@@ -28,11 +28,11 @@ export class ExpenseService{
 
         if(category)
         {
-            params = params.append("ExpenseCategory", category)
+            params = params.append("ExpenseCategory", category);
         }
 
         return this.http.get<IExpensesPage>(`${this.apiUrl}expenses`, {params})
-            .pipe(catchError(this.handleError<IExpensesPage>(undefined)))
+            .pipe(catchError(this.handleError<IExpensesPage>(undefined)));
     }
 
     getExpenseStatistics(category: any, startDate: any, endDate: any): Observable<IExpensesPage>
@@ -41,41 +41,41 @@ export class ExpenseService{
 
         if(category)
         {
-            params = params.append("ExpenseCategory", category)
+            params = params.append("ExpenseCategory", category);
         }
 
         if(startDate)
         {
-            params = params.append("StartDate", startDate)
+            params = params.append("StartDate", startDate);
         }
 
         if(endDate)
         {
-            params = params.append("EndDate", endDate)
+            params = params.append("EndDate", endDate);
         }
 
         return this.http.get<IExpensesPage>(`${this.apiUrl}expenses`, {params})
-            .pipe(catchError(this.handleError<IExpensesPage>(undefined)))
+            .pipe(catchError(this.handleError<IExpensesPage>(undefined)));
     }
 
     getExpense(id:number):Observable<IExpense>
     {
         return this.http.get<IExpense>(`${this.apiUrl}expenses/${id}`)
-            .pipe(catchError(this.handleError<IExpense>(undefined)))
+            .pipe(catchError(this.handleError<IExpense>(undefined)));
     }
 
     saveExpense(expense:IExpense): Observable<IExpense>
     {
-        const options = { headers: new HttpHeaders({"Content-Type":"application/json"})}
+        const options = { headers: new HttpHeaders({"Content-Type":"application/json"})};
         return this.http.post<IExpense>(`${this.apiUrl}expenses`, expense, options)
-            .pipe(catchError(this.handleError<IExpense>(undefined)))
+            .pipe(catchError(this.handleError<IExpense>(undefined)));
     }
 
     private handleError<T> (result?: T)
     {
         return (error: any): Observable<T> => {
             console.error(error);
-            return of(result as T)
+            return of(result as T);
         }
     }
 }

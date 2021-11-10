@@ -1,28 +1,17 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthService } from "../auth/auth.service";
 import { GoogleLoginProvider, SocialAuthService } from "angularx-social-login";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
-    selector: "nav-bar",
-    templateUrl: "./navbar.component.html"
+    templateUrl: "./home.component.html"
 })
-export class NavBarComponent{
-    isCollapsed = true;
-    message: string | undefined;
-
+export class HomeComponent {
     constructor(public auth:AuthService, private router: Router,
         public socialAuthService: SocialAuthService,
         private toastr: ToastrService){
 
-    }
-
-    public isLinkActive(url: string): boolean{
-        const queryParamsIndex = this.router.url.indexOf("?");
-        const baseUrl = queryParamsIndex === -1 ? this.router.url : this.router.url.slice(0, queryParamsIndex);
-        
-        return baseUrl === url;
     }
 
     signInWithGoogle(): void{
@@ -44,7 +33,3 @@ export class NavBarComponent{
         this.toastr.success(message);
     }
 }
-
-
-
-    

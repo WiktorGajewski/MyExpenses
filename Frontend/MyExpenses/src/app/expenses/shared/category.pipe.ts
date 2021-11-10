@@ -6,16 +6,16 @@ export class CategoryPipe implements PipeTransform{
     transform(value: any) : string | undefined
     {
         if(!value){
-            return undefined
+            return undefined;
         }
 
         if(!isNaN(Number(value)))
         {
-            return CategoryType[value].replace("_", " ")
+            return CategoryType[value].replace("_", " ");
         }
         else
         {
-            return value.replace("_", " ")
+            return value.replace("_", " ");
         }
     }
 }
