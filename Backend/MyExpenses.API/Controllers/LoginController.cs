@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace MyExpenses.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/auth")]
     public class LoginController : Controller
     {
@@ -22,7 +23,9 @@ namespace MyExpenses.API.Controllers
         }
 
         [HttpPost("google")]
+        [AllowAnonymous]
         [Consumes("application/json", "application/xml")]
+        [Produces("application/json", "application/xml")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         public async Task<ActionResult<AuthenticationModel>> GoogleLogin([FromBody] GoogleLoginRequest request)
@@ -43,8 +46,8 @@ namespace MyExpenses.API.Controllers
             return Ok(new AuthenticationModel(true, token, durationTime));
         }
 
-        [Authorize]
         [HttpPost("authorized")]
+        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         public IActionResult IsAuthorized()

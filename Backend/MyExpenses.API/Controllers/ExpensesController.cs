@@ -16,6 +16,7 @@ using System.Security.Claims;
 namespace MyExpenses.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/expenses")]
     public class ExpensesController : ControllerBase
     {
@@ -30,16 +31,7 @@ namespace MyExpenses.API.Controllers
             _currentUserId = httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
-        [Route("id")]
         [HttpGet]
-        [Authorize]
-        public IActionResult GetId()
-        {
-            return Ok(_currentUserId);
-        }
-
-        [HttpGet]
-        [Authorize]
         [Produces("application/json","application/xml")]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<ExpenseGetDto>>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -67,20 +59,10 @@ namespace MyExpenses.API.Controllers
             }
         }
 
-
-        //[HttpHead]
-        //[Produces("application/json", "application/xml")]
-        //[ProducesResponseType(typeof(EmptyResult), 200)]
-        //public ActionResult<IEnumerable<ExpenseGetDto>> HeadExpenses()
-        //{
-        //    var expenses = _expenseRepository.GetAllExpenses(_currentUserId);
-
-        //    return Ok(_mapper.Map<IEnumerable<ExpenseGetDto>>(expenses));
-        //}
-
         [HttpGet("{id}", Name = "GetExpense")]
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(ExpenseGetDto), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public ActionResult<ExpenseGetDto> GetExpense(int id)
@@ -103,6 +85,7 @@ namespace MyExpenses.API.Controllers
         [HttpGet("categories")]
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(List<EnumValue>), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         public IActionResult GetExpenseCategories()
         {
             var categories = EnumExtensions.GetValues<ExpenseCategory>();
@@ -115,6 +98,7 @@ namespace MyExpenses.API.Controllers
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(ExpenseGetDto), 201)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         public ActionResult<ExpenseGetDto> CreateExpense([FromBody] ExpenseCreateDto newExpense)
         {
             var newExpenseEntity = _mapper.Map<Expense>(newExpense);
@@ -132,6 +116,7 @@ namespace MyExpenses.API.Controllers
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult UpdateExpense(int id, [FromBody] ExpenseUpdateDto updatedExpense)
@@ -161,6 +146,7 @@ namespace MyExpenses.API.Controllers
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult PartiallyUpdateExpense(int id, [FromBody] JsonPatchDocument<ExpenseUpdateDto> patchDocument)
@@ -202,6 +188,7 @@ namespace MyExpenses.API.Controllers
         [HttpDelete("{id}")]
         [Produces("application/json", "application/xml")]
         [ProducesResponseType(typeof(EmptyResult), 204)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         [ProducesResponseType(typeof(ProblemDetails), 403)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         public IActionResult DeleteExpense(int id)
@@ -226,6 +213,7 @@ namespace MyExpenses.API.Controllers
 
         [HttpOptions]
         [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
         public IActionResult GetExpensesOptions()
         {
             Response.Headers.Add("Allow", "GET,OPTIONS,POST");

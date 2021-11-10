@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MyExpenses.Core.Entities;
+using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
 
 namespace MyExpenses.API
 {
@@ -42,6 +44,30 @@ namespace MyExpenses.API
                 {
                     Title = "MyExpenses Api",
                     Version = "v1",
+                });
+
+                c.AddSecurityDefinition("Jwt authorization", new OpenApiSecurityScheme
+                {
+                    Description = "Enter JWT Bearer token",
+                    In = ParameterLocation.Header,
+                    Name = "JWT Authentication",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Jwt authorization"
+                            }
+                        },
+                        new List<string>()
+                    }
                 });
             });
 
