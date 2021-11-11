@@ -1,4 +1,4 @@
-﻿namespace MyExpenses.API.Wrappers
+﻿namespace MyExpenses.API.Pagination.Wrappers
 {
     public class PagedResponse<T>
     {

@@ -1,7 +1,7 @@
 ﻿using MyExpenses.Core.Entities;
 using System;
 
-namespace MyExpenses.API.Resources
+namespace MyExpenses.Application.DataTransferObjects
 {
     public class ExpenseGetDto
     {

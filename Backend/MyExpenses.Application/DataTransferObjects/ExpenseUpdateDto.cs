@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyExpenses.API.Resources
+namespace MyExpenses.Application.DataTransferObjects
 {
-    public class ExpenseCreateDto
+    public class ExpenseUpdateDto
     {
         [Required(AllowEmptyStrings = false)]
         [MaxLength(200)]

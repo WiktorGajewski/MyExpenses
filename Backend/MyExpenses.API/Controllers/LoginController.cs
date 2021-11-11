@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using MyExpenses.API.Handlers;
-using MyExpenses.API.Wrappers;
+using MyExpenses.API.Security.Handlers;
+using MyExpenses.API.Security.Wrappers;
 using System;
 using System.Threading.Tasks;
 

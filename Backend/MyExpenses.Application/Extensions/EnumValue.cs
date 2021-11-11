@@ -1,4 +1,4 @@
-﻿namespace MyExpenses.API.Extensions
+﻿namespace MyExpenses.Application.Extensions
 {
     public class EnumValue
     {

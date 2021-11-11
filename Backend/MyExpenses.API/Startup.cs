@@ -9,13 +9,13 @@ using MyExpenses.Data.Interfaces;
 using MyExpenses.Data.Services;
 using System;
 using Microsoft.OpenApi.Models;
-using MyExpenses.API.Handlers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MyExpenses.Core.Entities;
 using System.Collections.Generic;
+using MyExpenses.API.Security.Handlers;
 
 namespace MyExpenses.API
 {

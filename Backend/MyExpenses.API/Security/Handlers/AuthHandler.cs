@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using MyExpenses.API.Wrappers;
+using MyExpenses.API.Security.Wrappers;
 using MyExpenses.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
-namespace MyExpenses.API.Handlers
+namespace MyExpenses.API.Security.Handlers
 {
     public class AuthHandler : IAuthHandler
     {

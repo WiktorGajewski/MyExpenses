@@ -1,9 +1,9 @@
 ﻿using MyExpenses.API.Filters;
-using MyExpenses.API.Wrappers;
+using MyExpenses.API.Pagination.Wrappers;
 using System;
 using System.Collections.Generic;
 
-namespace MyExpenses.API.Helpers
+namespace MyExpenses.API.Pagination.Helpers
 {
     public class PaginationHelper
     {

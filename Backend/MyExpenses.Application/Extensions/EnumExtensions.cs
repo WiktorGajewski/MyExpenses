@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyExpenses.API.Extensions
+namespace MyExpenses.Application.Extensions
 {
     public static class EnumExtensions
     {

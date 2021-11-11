@@ -1,4 +1,4 @@
-﻿namespace MyExpenses.API.Wrappers
+﻿namespace MyExpenses.API.Security.Wrappers
 {
     public class GoogleLoginRequest
     {

@@ -1,10 +1,9 @@
-﻿using MyExpenses.API.Wrappers;
+﻿using MyExpenses.API.Security.Wrappers;
 using MyExpenses.Core.Entities;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
-namespace MyExpenses.API.Handlers
+namespace MyExpenses.API.Security.Handlers
 {
     public interface IAuthHandler
     {
