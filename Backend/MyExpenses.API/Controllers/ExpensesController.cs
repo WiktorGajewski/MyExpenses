@@ -42,19 +42,19 @@ namespace MyExpenses.API.Controllers
 
             if ( filterPage?.PageNumber != null && filterPage?.PageSize != null )
             {
-                var expenses = _expenseRepository.GetExpensesAndFilter(_currentUserId, filterPage.PageNumber.Value, filterPage.PageSize.Value,
+                var expenses = _expenseRepository.GetExpenses(_currentUserId, filterPage.PageNumber.Value, filterPage.PageSize.Value,
                     filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
 
                 return Ok(
-                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
+                    PaginationHelper.CreatePagedResponse<ExpenseGetDto>(_mapper.Map<ICollection<ExpenseGetDto>>(expenses), filterPage, _expenseRepository.CountExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
                 );
             }
             else
             {
-                var expenses = _expenseRepository.GetAllExpensesAndFilter(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
+                var expenses = _expenseRepository.GetAllExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate);
 
                 return Ok(
-                    PaginationHelper.CreatePagedResponse(expenses, filterPage, _expenseRepository.CountExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
+                    PaginationHelper.CreatePagedResponse<ExpenseGetDto>(_mapper.Map<ICollection<ExpenseGetDto>>(expenses), filterPage, _expenseRepository.CountExpenses(_currentUserId, filter.SearchTerm, filter.ExpenseCategory, filter.StartDate, filter.EndDate))
                 );
             }
         }

@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MyExpenses.Core.Entities;
-using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 
 namespace MyExpenses.API

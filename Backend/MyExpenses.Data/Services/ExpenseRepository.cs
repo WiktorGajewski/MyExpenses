@@ -15,17 +15,7 @@ namespace MyExpenses.Data.Services
             _context = context;
         }
 
-        //public IEnumerable<Expense> GetExpenses(int pageNumber, int pageSize)
-        //{
-        //    return _context.Expenses
-        //        .OrderByDescending(e => e.Date)
-        //        .ThenByDescending(e => e.Id)
-        //        .Skip((pageNumber - 1) * pageSize)
-        //        .Take(pageSize)
-        //        .ToList();
-        //}
-
-        public IEnumerable<Expense> GetExpensesAndFilter(string userId, int pageNumber, int pageSize, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
+        public IEnumerable<Expense> GetExpenses(string userId, int pageNumber, int pageSize, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
             var expenses = _context.Expenses.AsQueryable();
 
@@ -59,12 +49,7 @@ namespace MyExpenses.Data.Services
                     .ToList();
         }
 
-        //public IEnumerable<Expense> GetAllExpenses()
-        //{
-        //    return _context.Expenses.ToList();
-        //}
-
-        public IEnumerable<Expense> GetAllExpensesAndFilter(string userId, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
+        public IEnumerable<Expense> GetAllExpenses(string userId, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
             var expenses = _context.Expenses.AsQueryable();
 
@@ -92,11 +77,6 @@ namespace MyExpenses.Data.Services
 
             return expenses.ToList();
         }
-
-        //public int CountAllExpenses()
-        //{
-        //    return _context.Expenses.Count();
-        //}
 
         public int CountExpenses(string userId, string searchTerm, ExpenseCategory category, DateTime? startDate, DateTime? endDate)
         {
