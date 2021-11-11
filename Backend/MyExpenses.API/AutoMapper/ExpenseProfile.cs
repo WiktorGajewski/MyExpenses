@@ -2,7 +2,7 @@
 using MyExpenses.Application.DataTransferObjects;
 using MyExpenses.Core.Entities;
 
-namespace MyExpenses.Application.AutoMapper
+namespace MyExpenses.API.AutoMapper
 {
     public class ExpenseProfile : Profile
     {
