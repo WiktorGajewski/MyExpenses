@@ -1,0 +1,67 @@
+<div class="container mt-2 mb-5">
+    <h1>Statistics</h1>
+    <hr />
+
+    <div> 
+        <form [formGroup]="searchForm" (ngSubmit)="filter(searchForm.value)">
+            <div class="row">
+                <div class="form-floating col-md-6 mb-3">
+                    <input formControlName="startDate" id="startDate" type="date" class="form-control">
+                    <label for="startDate">Start date</label>
+                </div>
+                <div class="form-floating col-md-6 mb-3">
+                    <input formControlName="endDate" id="endDate" type="date" class="form-control">
+                    <label for="endDate">End date</label>
+                </div>
+                <div class="form-floating col-10 col-md-6 mb-3">
+                    <select formControlName="category"  id="category" class="form-control">
+                        <option [ngValue]="null">select category...</option>
+                        <option *ngFor="let category of categories" [ngValue]="category">{{category | category}}</option>
+                    </select>
+                    <label for="category">Search by Category</label>
+                </div>
+                <div class="col-1 col-md-2 m-1">
+                    <button type="submit" class="btn btn-lg btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form> 
+        <ul class="list-group">
+            <li class="list-group-item text-center">
+                {{searchStartDate}} <strong> - </strong> {{searchEndDate}}
+            </li>
+        </ul> 
+    </div>
+    <hr />
+
+    <div class="row mb-5">
+        <div class="col-1 col-md-1"></div>
+        <div class="col-10 col-md-10">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-secondary">
+                        <th scope="col">Total Amount</th>
+                        <th scope="col">{{totalAmount | currency:"USD":"symbol":"1.2-2"}}</th>
+                        <th scope="col">100%</th>
+                    </tr>
+                    <tr *ngFor="let category of amountPerCategory">
+                    <td>{{category.category | category}}</td>
+                    <td>{{category.value | currency:"USD":"symbol":"1.2-2"}}</td>
+                    <td>{{category.value / totalAmount | percent}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+</div>

@@ -1,0 +1,61 @@
+<div class="container mb-5">
+    <h1 class="mt-2">{{pageTitle}}</h1>
+    <hr />
+
+    <div> 
+        <form [formGroup]="searchTermForm" (ngSubmit)="filter(searchTermForm.value)">
+            <div class="row">
+                <div class="form-floating col-12 col-md-5 mb-2">
+                    <input formControlName="searchByTerm" class="form-control" id="searchByTerm" type="text" placeholder="">
+                    <label for="searchByTerm">Search</label>
+                </div>
+                <div class="form-floating col-10 col-md-5">
+                    <select formControlName="searchByCategory"  id="searchByCategory" class="form-control">
+                        <option [ngValue]="null">select category...</option>
+                        <option *ngFor="let category of categories" [ngValue]="category">{{category | category}}</option>
+                    </select>
+                    <label for="searchByCategory">Search by Category</label>
+                </div>
+                <div class="col-1 m-1">
+                    <button type="submit" class="btn btn-lg btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>  
+    </div>
+    <hr />
+
+    <div *ngIf="totalPages == 0" class="text-center text-info">
+        <h5>No results have been found</h5>
+    </div>
+
+    <div class="row">
+        <div *ngFor="let expense of expenses">
+            <expense-card [expense]="expense"></expense-card>
+        </div>
+    </div>
+
+    <br>
+    <nav aria-label="Page navigation" class="mb-5">
+        <ul class="pagination justify-content-center pagination-lg">
+            <li class="page-item " [ngClass]="{'disabled': ( pageNumber <= 1 ) }">
+                <a class="page-link" (click)="goToPage(pageNumber-1)" style="cursor:pointer">Previous</a>
+            </li>
+
+            <li class="page-item" *ngFor="let link of additionalPageLinks" [ngClass]="{'active': ( link === pageNumber ) }">
+                <a class="page-link" (click)="goToPage(link)" style="cursor:pointer">{{link}}</a>
+            </li>
+
+            <li class="page-item" [ngClass]="{'disabled': ( pageNumber >= totalPages ) }">
+                <a class="page-link" (click)="goToPage(pageNumber+1)" style="cursor:pointer">Next</a>
+            </li>
+        </ul>
+        <div class="text-center">
+            Page: {{pageNumber}} of {{totalPages}}
+        </div>
+    </nav>
+    <br>
+</div>

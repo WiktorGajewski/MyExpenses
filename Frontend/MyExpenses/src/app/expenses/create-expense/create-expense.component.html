@@ -1,0 +1,45 @@
+
+<div class="container">
+    <h1 class="mt-2">Add</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+            <form [formGroup]="newExpenseForm" (ngSubmit)="saveExpense(newExpenseForm.value)" autocomplete="off">
+                <div class="form-floating mb-3">
+                    <textarea formControlName="description" id="expenseDescription" type="text" class="form-control" 
+                    [ngClass]="{'is-invalid': description.invalid && description.dirty}" placeholder="Description.."></textarea>
+
+                    <label for="expenseDescription">Descritpion:</label>
+                    <em *ngIf="description.invalid && description.dirty && description?.errors?.required" class="text-danger">Required</em>
+                    <em *ngIf="description.invalid && description.dirty && description?.errors?.maxlength" class="text-danger">Cannot exceed 100 characters</em>
+                </div>
+                <div class="form-floating mb-3">
+                    <input formControlName="date" id="expenseDate" type="date" class="form-control" [ngClass]="{'is-invalid': date.invalid && date.dirty}">
+                    <label for="expenseDate">Date:</label>
+                    <em *ngIf="date.invalid && date.dirty" class="text-danger">Required</em>
+                </div>
+                <div class="form-floating mb-3">
+                    <input formControlName="value" id="expenseValue" type="number" class="form-control" [ngClass]="{'is-invalid': value.invalid && value.dirty}" placeholder="Value">
+                    <label for="expenseValue">Amount:</label>
+                    <em *ngIf="value.invalid && value.dirty && value?.errors?.required" class="text-danger">Required</em>
+                    <em *ngIf="value.invalid && value.dirty && !(value?.errors?.required)" class="text-danger">Invalid number(only positive and max 2 decimal places)</em>
+                </div>
+                <div class="form-floating">
+                    <select formControlName="category"  id="expenseCategory" class="form-control" [ngClass]="{'is-invalid': category.invalid && category.dirty}">
+                        <option [ngValue]="null">select category...</option>
+                        <option *ngFor="let category of categories" [ngValue]="category">{{category | category}}</option>
+                    </select>
+                    <label for="expenseCategory">Category:</label>
+                    <em *ngIf="category.invalid && category.dirty" class="text-danger">Required</em>
+                </div>
+
+                <br>
+                <div class="btn-group btn-group-lg">
+                    <button type="submit" [disabled]="newExpenseForm.invalid" class="btn btn-outline-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
