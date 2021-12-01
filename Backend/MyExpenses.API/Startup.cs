@@ -124,10 +124,6 @@ namespace MyExpenses.API
                 app.UseDeveloperExceptionPage();
                 app.UseCors("DevelopmentPolicy");
             }
-            else
-            {
-                app.UseExceptionHandler();
-            }
 
             app.UseSwagger();
 
